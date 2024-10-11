@@ -1,0 +1,10 @@
+{
+  "credential_issuer": "https://example.com",
+  "credential_endpoint": "https://example.com/credential",
+  "credential_configurations_supported": {
+    "org.iso.18013.5.1.mDL": {
+      "format": "mso_mdoc",
+      "doctype": "org.iso.18013.5.1.mDL"
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Because the windows git sets the option core.autocrlf = true and this is erroneous, we deactivate this option here. See https://stackoverflow.com/a/52996849
+* -text

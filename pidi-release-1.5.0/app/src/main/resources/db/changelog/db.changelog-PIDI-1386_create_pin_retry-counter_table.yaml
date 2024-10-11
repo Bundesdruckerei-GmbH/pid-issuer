@@ -1,0 +1,44 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - property:
+      name: app.user
+      value: pidi_issuer_app
+      context: pidi
+  - changeSet:
+      id: create_pin_retry_counter_table
+      author: dve
+      changes:
+        - createTable:
+            tableName: pin_retry_counter
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: retry_counter_PK
+              - column:
+                  name: digest
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: value
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+        - sql:
+            endDelimiter: \nGO
+            splitStatements: true
+            sql: GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE pin_retry_counter TO ${app.user};
+            stripComments: true

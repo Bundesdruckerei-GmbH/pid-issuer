@@ -1,0 +1,13 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: create_hibernate_sequence
+      author: dve
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1

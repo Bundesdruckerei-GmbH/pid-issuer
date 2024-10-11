@@ -1,0 +1,49 @@
+{
+  "id": "mDL-sample-req-two-document-type-one-namespace",
+  "input_descriptors": [
+    {
+      "id": "org.iso.18013.5.1.mDL",
+      "format": {
+        "mso_mdoc": {
+          "alg": [
+            "EdDSA",
+            "ES256"
+          ]
+        }
+      },
+      "constraints": {
+        "limit_disclosure": "required",
+        "fields": [
+          {
+            "path": [
+              "$['org.iso.18013.5.1']['age_over_18']"
+            ],
+            "intent_to_retain": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "domestic_document_type",
+      "format": {
+        "mso_mdoc": {
+          "alg": [
+            "EdDSA",
+            "ES256"
+          ]
+        }
+      },
+      "constraints": {
+        "limit_disclosure": "required",
+        "fields": [
+          {
+            "path": [
+              "$['domestic_namespace']['domestic_data_element_id']"
+            ],
+            "intent_to_retain": false
+          }
+        ]
+      }
+    }
+  ]
+}

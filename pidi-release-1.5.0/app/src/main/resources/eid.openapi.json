@@ -1,0 +1,138 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PIDI eID auth api",
+    "description": "Provides authorization with eid.",
+    "version": "2.0.2-SNAPSHOT"
+  },
+  "servers": [],
+  "tags": [
+    {
+      "name": "TR-03124",
+      "description": "authentication with eID, based on SAML with HTTP redirect binding",
+      "externalDocs": {
+        "description": "BSI: Technical Guideline TR-03124-1, eID-Client, Part 1: Specifications",
+        "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Technische-Richtlinien/TR-nach-Thema-sortiert/tr03124/TR-03124_node.html"
+      }
+    }
+  ],
+  "paths": {
+    "/eid/v1/saml-consumer": {
+      "summary": "response from the eID-Server, TR-03124",
+      "get": {
+        "summary": "consumes the SAML Response from the eID-Server",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "the eID-Server sends the response and we redirect the eID-Client to continue in the authentication flow, TR-03124",
+        "operationId": "getSamlConsumer",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "SAMLResponse",
+            "description": "the SAML Response (long value)",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "RelayState",
+            "description": "provides additional information",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "SigAlg",
+            "description": "signature algorithm",
+            "schema": {
+              "type": "string",
+              "maxLength": 80,
+              "example": "http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "Signature",
+            "description": "signature",
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "success or failure, redirect to the next step or to an error page",
+            "headers": {
+              "Location": {
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "description": "the response to be sent after an error occurred",
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "error code identifying the error cause"
+          },
+          "message": {
+            "type": "string",
+            "description": "short error description"
+          }
+        }
+      }
+    }
+  },
+  "security": []
+}

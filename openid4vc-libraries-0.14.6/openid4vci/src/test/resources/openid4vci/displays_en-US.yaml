@@ -1,0 +1,30 @@
+#locale: de-DE
+issuer:
+  name: BDR Issuer
+  logo:
+    url: wdsdfsdf
+credentials_supported:
+  VerifiedEMail:
+    name: verified eMail address
+    logo:
+      url: https://web.demo.idunion.bundesdruckerei.de/img/Bundesdruckerei_Favicon_RGB_300dpi.png
+      alternative_text: Bundesdruckerei Logo
+    background_color: "#12107c"
+    text_color: "#FFFFFF"
+    credentialSubject:
+      given_name: Given name
+      last_name: Last name
+      email: E-Mail address
+  AttestedVerifiedEMail:
+    name: verified eMail address
+    logo:
+      url: https://web.demo.idunion.bundesdruckerei.de/img/Bundesdruckerei_Favicon_RGB_300dpi.png
+      alternative_text: Bundesdruckerei Logo
+    background_color: "#12107c"
+    text_color: "#FFFFFF"
+    credentialSubject:
+      given_name: Given name
+      last_name: Last name
+      email: E-Mail address
+
+

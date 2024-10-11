@@ -1,0 +1,18 @@
+{
+  "jwks": {
+    "keys": [
+      {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "psIq6slE7F1yZ3ara0hsfSlAz5qinuf5jtk4dHbRorY",
+        "y": "ptKGAp2Mh8RwecGzEHSJbGuW0osoOAHmSZz_rVjeddM"
+      }
+    ]
+  },
+  "authorization_encrypted_response_alg": "ECDH-ES",
+  "authorization_encrypted_response_enc": "A256GCM",
+  "require_signed_request_object": false,
+  "vp_formats": {
+    "mso_mdoc": {}
+  }
+}

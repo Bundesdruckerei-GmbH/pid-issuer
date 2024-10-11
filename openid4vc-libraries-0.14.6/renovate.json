@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "automergeType": "pr",
+  "prHourlyLimit": 0,
+  "rebaseWhen": "behind-base-branch",
+  "separateMultipleMajor": true,
+  "separateMinorPatch": true,
+  "separateMajorMinor": true,
+  "commitMessagePrefix": "Renovate: ",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "groupName": "Patches and minor dependencies",
+      "groupSlug": "patches-and-minor-updates",
+      "automerge": true
+    }
+  ]
+}

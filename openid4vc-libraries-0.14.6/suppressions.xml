@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright $YEAR Bundesdruckerei GmbH
+  - For the license see the accompanying file LICENSE.md
+  -->
+<!-- Supressions file for owasp dependency check -->
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+            suppress openid4vc-common.jar identified as openid jar
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/de\.bdr\.ssi/openid4vc\-common@.*$</packageUrl>
+        <cpe>cpe:/a:openid:openid</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            suppress invalid jackson CVE
+        ]]></notes>
+        <cve>CVE-2023-35116</cve>
+    </suppress>
+</suppressions>

@@ -1,0 +1,19 @@
+{
+  "issuer": "https://example.com",
+  "authorization_endpoint": "https://example.com/authorization",
+  "token_endpoint": "https://example.com/token",
+  "response_types_supported": [
+    "response-type-a"
+  ],
+  "pushed_authorization_request_endpoint": "https://example.com/par",
+  "require_pushed_authorization_requests": true,
+  "code_challenge_methods_supported": [
+    "S256"
+  ],
+  "dpop_signing_alg_values_supported": [
+    "dpop-alg-a"
+  ],
+  "grant_types_supported": [
+    "grant-type-a"
+  ]
+}

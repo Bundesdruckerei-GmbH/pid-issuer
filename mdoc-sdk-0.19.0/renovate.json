@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "baseBranches": ["main"],
+  "automerge": false,
+  "automergeType": "pr",
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "groupName": "Androidx Lifecycle deps",
+      "matchPackagePatterns": ["androidx.lifecycle", "androidx.navigation:navigation-compose"]
+    },
+    {
+      "groupName": "Compose Dependencies",
+      "matchPackagePatterns": "^androidx\\..*compose\\."
+    },
+    {
+      "groupName": "Kotlin Dependencies",
+      "matchPackagePrefixes": ["org.jetbrains.kotlin"]
+    },
+    {
+      "groupName": "Retrofit 2",
+      "matchPackagePrefixes": ["com.squareup.retrofit2"]
+    }
+  ]
+}

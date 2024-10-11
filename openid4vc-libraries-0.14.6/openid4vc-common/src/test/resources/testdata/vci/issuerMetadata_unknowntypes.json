@@ -1,0 +1,660 @@
+{
+  "issuer": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13",
+  "authorization_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/authorize",
+  "pushed_authorization_request_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/authorize/par",
+  "token_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/token",
+  "jwks_uri": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/jwks",
+  "credential_issuer": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13",
+  "credential_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/credential",
+  "deferred_credential_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/deferred",
+  "batch_credential_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/batch_credential",
+  "batch_endpoint": "https://icp-credentialissuer.aster-x.demo23.gxfs.fr/gaiax/issuer/oid4vci_draft13/batch_credential",
+  "scopes_supported": [
+    "openid"
+  ],
+  "response_modes_supported": [
+    "query",
+    "fragment"
+  ],
+  "grant_types_supported": [
+    "authorization_code",
+    "urn:ietf:params:oauth:grant-type:pre-authorized_code"
+  ],
+  "subject_types_supported": [
+    "public"
+  ],
+  "credential_configurations_supported": {
+    "gx:LegalParticipant": {
+      "format": "ldp_vc",
+      "scope": "LegalParticipant_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:LegalParticipant"
+        ],
+        "credentialSubject": {
+          "gx:legalName": {
+            "display": [
+              {
+                "name": "Legal Name",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:headquarterAddress": {
+            "gx:addressCountryCode": {
+              "display": [
+                {
+                  "name": "Address Country Code",
+                  "locale": "en-US"
+                }
+              ]
+            },
+            "gx:countrySubdivisionCode": {
+              "display": [
+                {
+                  "name": "Country Subdivision Code",
+                  "locale": "en-US"
+                }
+              ]
+            },
+            "gx:streetAddress": {
+              "display": [
+                {
+                  "name": "Street Address",
+                  "locale": "en-US"
+                }
+              ]
+            },
+            "gx:postalCode": {
+              "display": [
+                {
+                  "name": "Postal Code",
+                  "locale": "en-US"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Legal Participant",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:legalRegistrationNumber": {
+      "format": "ldp_vc",
+      "scope": "LegalRegistrationNumber_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:legalRegistrationNumber"
+        ],
+        "credentialSubject": {
+          "gx:vatID": {
+            "display": [
+              {
+                "name": "VatID",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:vatID-countryCode": {
+            "display": [
+              {
+                "name": "VatID country code",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:leiCode": {
+            "display": [
+              {
+                "name": "leiCode",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:leiCode-countryCode": {
+            "display": [
+              {
+                "name": "leiCode country code",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:EORI": {
+            "display": [
+              {
+                "name": "EORI",
+                "locale": "en-US"
+              }
+            ]
+          }
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Registration Number",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:GaiaXTermsAndConditions": {
+      "format": "ldp_vc",
+      "scope": "TermsAndConditions_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:GaiaXTermsAndConditions"
+        ],
+        "credentialSubject": {
+          "gx:termsAndConditions": {
+            "display": [
+              {
+                "name": "Terms and Conditions",
+                "locale": "en-US"
+              }
+            ]
+          }
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Terms And Conditions",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:compliance": {
+      "format": "ldp_vc",
+      "scope": "Compliance_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:compliance"
+        ],
+        "credentialSubject": [
+          {
+            "gx:version": {
+              "display": [
+                {
+                  "name": "Version",
+                  "locale": "en-US"
+                }
+              ]
+            }
+          },
+          {
+            "gx:version": {
+              "display": [
+                {
+                  "name": "Version",
+                  "locale": "en-US"
+                }
+              ]
+            }
+          },
+          {
+            "gx:version": {
+              "display": [
+                {
+                  "name": "Version",
+                  "locale": "en-US"
+                }
+              ]
+            }
+          },
+          {
+            "gx:version": {
+              "display": [
+                {
+                  "name": "Version",
+                  "locale": "en-US"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Compliance",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:ServiceOffering": {
+      "format": "ldp_vc",
+      "scope": "ServiceOffering_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:ServiceOffering"
+        ],
+        "credentialSubject": {
+          "gx:providedBy": {
+            "display": [
+              {
+                "name": "Provided By",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:name": {
+            "display": [
+              {
+                "name": "Name",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:policy": {
+            "display": [
+              {
+                "name": "Policy",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:description": {
+            "display": [
+              {
+                "name": "Service Description",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "gx:keyword": {
+            "display": [
+              {
+                "name": "Keyword",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "aster-conformity:layer": {
+            "display": [
+              {
+                "name": "Aster Conformity Layer",
+                "locale": "en-US"
+              }
+            ]
+          }
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Service Offering",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "EmployeeCredential": {
+      "format": "ldp_vc",
+      "scope": "EmployeeCredential_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "EmployeeCredential"
+        ],
+        "credentialSubject": {
+          "firstName": {
+            "display": [
+              {
+                "name": "First name",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "familyName": {
+            "display": [
+              {
+                "name": "Last name",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "email": {
+            "display": [
+              {
+                "name": "Email",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "phoneNumber": {
+            "display": [
+              {
+                "name": "Phone Number",
+                "locale": "en-US"
+              }
+            ]
+          },
+          "company": {
+            "display": [
+              {
+                "name": "Company",
+                "locale": "en-US"
+              }
+            ]
+          }
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Employee Credential",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:DelegationCredential": {
+      "format": "ldp_vc",
+      "scope": "DelegationCredential_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:DelegationCredential"
+        ]
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "RS256"
+      ],
+      "display": [
+        {
+          "name": "Delegation Credential",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "gx:ContractCredential": {
+      "format": "ldp_vc",
+      "scope": "ContractCredential_scope",
+      "credential_definition": {
+        "type": [
+          "VerifiableCredential",
+          "gx:ContractCredential"
+        ]
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID"
+      ],
+      "credential_signing_alg_values_supported": [
+        "PS256"
+      ],
+      "display": [
+        {
+          "name": "Contract Credential",
+          "locale": "en-US",
+          "description": "Gaia-X Community",
+          "background_image": {
+            "url": "https://raw.githubusercontent.com/TalaoDAO/AltMe/main/assets/image/employee_credential.png"
+          },
+          "text_color": "#FFFFFF"
+        }
+      ]
+    },
+    "EmptyUnsupported": {
+      "format": "unsupported"
+    },
+    "EudiPid": {
+      "format": "vc+sd-jwt",
+      "scope": "EudiPid_scope",
+      "order": [
+        "family_name",
+        "given_name",
+        "birthdate",
+        "place_of_birth",
+        "age_equal_or_over",
+        "address",
+        "issuing_authority",
+        "issuing_country"
+      ],
+      "claims": {
+        "family_name": {
+          "mandatory": true,
+          "value_type": "string",
+          "display": [
+            {
+              "name": "Family name",
+              "locale": "en-US"
+            },
+            {
+              "name": "Nom",
+              "locale": "fr-FR"
+            }
+          ]
+        },
+        "given_name": {
+          "mandatory": true,
+          "value_type": "string",
+          "display": [
+            {
+              "name": "First name",
+              "locale": "en-US"
+            },
+            {
+              "name": "Prénom",
+              "locale": "fr-FR"
+            }
+          ]
+        },
+        "birthdate": {
+          "mandatory": true,
+          "value_type": "string",
+          "display": [
+            {
+              "name": "Birth date",
+              "locale": "en-US"
+            },
+            {
+              "name": "Date de naissance",
+              "locale": "fr-FR"
+            }
+          ]
+        },
+        "place_of_birth": {
+          "locality": {
+            "mandatory": false,
+            "value_type": "string",
+            "display": [
+              {
+                "name": "Locality",
+                "locale": "en-US"
+              },
+              {
+                "name": "Localité",
+                "locale": "fr-FR"
+              }
+            ]
+          },
+          "display": [
+            {
+              "locale": "en-US",
+              "name": "Place of birth"
+            },
+            {
+              "locale": "fr-FR",
+              "name": "Lieu de naissance"
+            }
+          ]
+        },
+        "age_equal_or_over": {
+          "18": {
+            "mandatory": false,
+            "value_type": "bool",
+            "display": [
+              {
+                "name": "Aged over 18 yo",
+                "locale": "en-US"
+              },
+              {
+                "name": "Agé de plus de 18 ans",
+                "locale": "fr-FR"
+              }
+            ]
+          },
+          "display": [
+            {
+              "locale": "en-US",
+              "name": "Age"
+            },
+            {
+              "locale": "fr-FR",
+              "name": "Age"
+            }
+          ]
+        },
+        "address": {
+          "formatted": {
+            "mandatory": false,
+            "value_type": "string",
+            "display": [
+              {
+                "name": "Formatted",
+                "locale": "en-US"
+              },
+              {
+                "name": "Complete",
+                "locale": "fr-FR"
+              }
+            ]
+          },
+          "display": [
+            {
+              "locale": "en-US",
+              "name": "Address"
+            },
+            {
+              "locale": "fr-FR",
+              "name": "Adresse"
+            }
+          ]
+        },
+        "issuing_country": {
+          "display": [
+            {
+              "locale": "en-US",
+              "name": "Issuing country"
+            },
+            {
+              "locale": "fr-FR",
+              "name": "Pays d'emission"
+            }
+          ],
+          "mandatory": true,
+          "value_type": "string"
+        },
+        "issuing_authority": {
+          "display": [
+            {
+              "locale": "en-US",
+              "name": "Issuing authority"
+            },
+            {
+              "locale": "fr-FR",
+              "name": "Autorité d'emission"
+            }
+          ],
+          "mandatory": true,
+          "value_type": "string"
+        }
+      },
+      "cryptographic_binding_methods_supported": [
+        "DID",
+        "jwk"
+      ],
+      "credential_signing_alg_values_supported": [
+        "ES256K",
+        "ES256",
+        "ES384",
+        "RS256"
+      ],
+      "vct": "urn:eu.europa.ec.eudi:pid:1",
+      "display": [
+        {
+          "name": "EUDI PID",
+          "locale": "en-US",
+          "background_color": "#14107c",
+          "text_color": "#FFFFFF"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+
+-->
+<configuration>
+    <springProperty scope="context" name="applicationName" source="spring.application.name"
+                    defaultValue="spring-service"/>
+
+    <springProfile name="!bop">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level s:[%X{sessionId} %X{clientId}] %logger{36}.%M %X - %msg %ex{10}%nopex%n
+                </pattern>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <springProfile name="bop">
+        <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp/>
+                    <version/>
+                    <message/>
+                    <loggerName/>
+                    <threadName/>
+                    <logLevel/>
+                    <logLevelValue/>
+                    <stackTrace>
+                        <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                            <maxDepthPerThrowable>20</maxDepthPerThrowable>
+                        </throwableConverter>
+                    </stackTrace>
+                    <logstashMarkers/>
+                    <arguments/>
+                    <throwableClassName/>
+                    <throwableRootCauseClassName>
+                        <useSimpleClassName>false</useSimpleClassName>
+                    </throwableRootCauseClassName>
+                    <pattern>
+                        <pattern>
+                            {
+                            "serviceName": "${applicationName}",
+                            "sessionId": "%mdc{sessionId:-}",
+                            "clientId": "%mdc{clientId:-}",
+                            "pid": "${PID:-}"
+                            }
+                        </pattern>
+                    </pattern>
+                </providers>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="jsonConsoleAppender" />
+        </root>
+    </springProfile>
+</configuration>

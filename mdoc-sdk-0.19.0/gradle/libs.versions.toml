@@ -1,0 +1,91 @@
+[versions]
+# @keep
+compileSdk = "34"
+# @keep
+minSdk = "31"
+# @keep
+jvmTarget = "1.8"
+ble = "2.8.0"
+dependencyCheckGradle = "10.0.4"
+kotlinReflect = "2.0.10"
+comAndroidAgp = "8.6.1"
+orgJetbrainsKotlin = "2.0.20"
+coreKtx = "1.13.1"
+biometric = "1.1.0"
+jk1LicenseReport = "2.9"
+jacoco = "0.8.12"
+retrofit = "2.11.0"
+roomVersion = "2.6.1"
+securityCrypto = "1.1.0-alpha06"
+sonarqube = "5.1.0.4882"
+sqlcipherAndroid = "4.6.1"
+sqlite = "2.4.0"
+truth = "1.4.4"
+turbine = "1.1.0"
+upokecenterCbor = "4.5.6"
+kotlinxCoroutines = "1.8.1"
+augustcellarsCose = "1.1.0"
+okhttp = "4.12.0"
+bouncycastleBcpkixJdk18on = "1.78.1"
+kotlinxSerialization = "1.7.2"
+detekt = "1.23.7"
+comGoogleDevtools = "2.0.20-1.0.25"
+lifecycleRuntimeKtx = "2.8.6"
+zxing = "3.5.3"
+androidxAppcompat = "1.7.0"
+androidxOrchestrator = "1.5.0"
+kermit = "2.0.4"
+junit = "4.13.2"
+androidxJunit = "1.2.1"
+mockitoKotlin = "5.4.0"
+mockk = "1.13.12"
+mockitoInline = "5.2.0"
+
+[libraries]
+androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomVersion" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "androidxOrchestrator" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
+org-mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+org-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+io-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+com-squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+com-squareup-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+com-squareup-retrofit-kotlinx-serialization-converter = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
+com-squareup-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+no-nordicsemi-ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
+no-nordicsemi-ble-ktx = { module = "no.nordicsemi.android:ble-ktx", version.ref = "ble" }
+org-owasp-dependency-check-gradle = { module = "org.owasp:dependency-check-gradle", version.ref = "dependencyCheckGradle" }
+org-jetbrains-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
+org-jetbrains-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+org-jetbrains-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+org-jetbrains-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
+org-jetbrains-kotlinx-serialization-cbor = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }
+org-bouncycastle-bcpkix-jdk18on = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bouncycastleBcpkixJdk18on" }
+org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
+app-cash-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+com-upokecenter-cbor = { group = "com.upokecenter", name = "cbor", version.ref = "upokecenterCbor" }
+com-augustcellars-cose = { group = "com.augustcellars.cose", name = "cose-java", version.ref = "augustcellarsCose" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+com-google-truth = { module = "com.google.truth:truth", version.ref = "truth" }
+com-google-zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+sqlcipher-android = { module = "net.zetetic:sqlcipher-android", version.ref = "sqlcipherAndroid" }
+co-touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+[plugins]
+org-jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "orgJetbrainsKotlin" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "orgJetbrainsKotlin" }
+org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "orgJetbrainsKotlin" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "orgJetbrainsKotlin" }
+org-sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+com-android-library = { id = "com.android.library", version.ref = "comAndroidAgp" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "comGoogleDevtools" }
+jk1-license-report = { id = "com.github.jk1.dependency-license-report", version.ref = "jk1LicenseReport" }
+io-gitlab-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

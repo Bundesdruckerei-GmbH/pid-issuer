@@ -1,0 +1,74 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - property:
+      name: app.user
+      value: pidi_issuer_app
+      context: pidi
+  - changeSet:
+      id: create_pidi_session_table
+      author: dve
+      changes:
+        - createTable:
+            tableName: pidi_session
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pidi_session_PK
+              - column:
+                  name: flow
+                  type: varchar(2)
+              - column:
+                  name: session
+                  type: text
+                  remarks: The json representation of the session
+              - column:
+                  name: authorization_code
+                  type: varchar(128)
+              - column:
+                  name: issuer_state
+                  type: varchar(128)
+              - column:
+                  name: request_uri
+                  type: varchar(128)
+              - column:
+                  name: access_token
+                  type: varchar(128)
+              - column:
+                  name: next_expected_request
+                  type: varchar(64)
+        - createIndex:
+            columns:
+              - column:
+                  name: authorization_code
+            indexName: authorization_code_index
+            tableName: pidi_session
+        - createIndex:
+            columns:
+              - column:
+                  name: issuer_state
+            indexName: issuer_state_index
+            tableName: pidi_session
+        - createIndex:
+            columns:
+              - column:
+                  name: request_uri
+            indexName: request_uri_index
+            tableName: pidi_session
+        - createIndex:
+            columns:
+              - column:
+                  name: access_token
+            indexName: access_token_index
+            tableName: pidi_session
+        - sql:
+            endDelimiter: \nGO
+            splitStatements: true
+            sql: GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE pidi_session TO ${app.user};
+            stripComments: true

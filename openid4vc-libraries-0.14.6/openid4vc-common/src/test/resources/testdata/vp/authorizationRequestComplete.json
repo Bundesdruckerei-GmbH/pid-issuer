@@ -1,0 +1,49 @@
+{
+  "response_type": "jwt",
+  "client_id": "http://example.com",
+  "state": "ff00112233",
+  "scope": "test",
+  "redirect_uri": "https://example.com/redirect",
+  "response_uri": "https://example.com/response",
+  "client_metadata": {
+    "test": "test"
+  },
+  "nonce": "nonce",
+  "response_mode": "responseMode",
+  "presentation_definition": {
+    "id": "ff00",
+    "input_descriptors": [
+      {
+        "id": "foo",
+        "format": {
+          "vc+sd-jwt": {}
+        },
+        "constraints": {
+          "fields": [
+            {
+              "path": [
+                "path-a"
+              ],
+              "id": "field-id",
+              "purpose": "field-purpose",
+              "name": "field-name",
+              "filter": {
+                "type": "string",
+                "const": "expected-value"
+              },
+              "optional": false,
+              "intent_to_retain": true
+            },
+            {
+              "path": [
+                "path-b"
+              ]
+            }
+          ],
+          "limit_disclosure": "required"
+        }
+      }
+    ]
+  },
+  "aud": "audience"
+}

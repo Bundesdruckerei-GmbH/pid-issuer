@@ -1,0 +1,15 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: add_redirect_url_to_session_table
+      author: dve
+      changes:
+        - addColumn:
+            tableName: eid_session
+            columns:
+              - column:
+                  name: redirect_url
+                  type: VARCHAR(1024)

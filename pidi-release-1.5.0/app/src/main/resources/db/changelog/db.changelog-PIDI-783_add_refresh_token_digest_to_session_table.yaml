@@ -1,0 +1,21 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: add_refresh_token_digest_to_session_table
+      author: tra
+      changes:
+        - addColumn:
+            tableName: pidi_session
+            columns:
+              - column:
+                  name: refresh_token_digest
+                  type: VARCHAR(128)
+        - createIndex:
+            columns:
+              - column:
+                  name: refresh_token_digest
+            indexName: refresh_token_digest_index
+            tableName: pidi_session

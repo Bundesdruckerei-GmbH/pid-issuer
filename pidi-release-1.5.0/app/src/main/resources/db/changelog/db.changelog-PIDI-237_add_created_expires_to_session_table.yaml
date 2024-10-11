@@ -1,0 +1,32 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - property:
+      name: app.user
+      value: pidi_issuer_app
+      context: pidi
+  - changeSet:
+      id: update_pidi_session_add_created_expires
+      author: dve
+      changes:
+        - addColumn:
+            tableName: pidi_session
+            columns:
+              - column:
+                  name: created
+                  type: datetime
+                  defaultValueComputed: timezone('utc', now())
+              - column:
+                  name: expires
+                  type: timestamp
+        - sql:
+            sql:
+              UPDATE pidi_session SET expires = timezone('utc', now() + interval '1 hour') WHERE expires IS NULL;
+        - addNotNullConstraint:
+            tableName: pidi_session
+            columnName: created
+        - addNotNullConstraint:
+            tableName: pidi_session
+            columnName: expires

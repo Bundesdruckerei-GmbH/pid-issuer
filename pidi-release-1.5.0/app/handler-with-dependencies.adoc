@@ -1,0 +1,32 @@
+////
+  // Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+////
+
+|===
+|Name |Job |Comment
+
+|ClientAttestationHandler |V|must run before DpopValidationHandler
+|ClientIdMatchHandler |V|must run before ClientAttestationHandler
+|ExpirationValidationHandler |V|
+|KeyProofHandler |V |must run before CredentialHandler, CNonceIssuanceHandler
+|PkceHandler |V|
+|RedirectUriHandler |V|
+|ScopeHandler |V|
+|StateHandler |V|
+|ValidRequestOrderHandler |V|
+
+|DpopHandler |D|
+
+|ParHandler |V, F|
+|AuthorizationHandler |V, F|
+|FinishAuthorizationHandler |V, F|
+|TokenHandler |V, F|
+|CredentialHandler |V, F|
+
+|CNonceIssuanceHandler |P|
+
+|===
+`V` = Validation
+`F` = Flow
+`P` = Post processing
+`D` = DPoP

@@ -1,0 +1,75 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+tasks.withType(Test).configureEach {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+    failFast = true
+}
+
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn = ['build']
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests and lint."
+    reports {
+        csv.required.set(true) // to calculate the coverage with gitlab
+        html.required.set(true) // is used for local checks
+        xml.required.set(true) // is used for sonar
+    }
+
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/AutoValue_*.*',
+            '**/*JavascriptBridge.class',
+            '**/*JsonObjectMapper*.*',
+            '**/*MembersInjector*.*',
+            '**/*$InjectAdapter.class',
+            '**/*$ModuleAdapter.class',
+            '**/*View.class',
+            '**/ktx/**',
+            '**/decorator/**',
+            '**/*$ViewInjector*.class',
+            '**/*$ViewHolder*.class',
+            '**/*$Viewholder*.class',
+            '**/*ViewBinding*.*',
+            '**/Dao*.class',
+            '**/*Component*.*',
+            '**/*Module*.*',
+            '**/*Injector*.*',
+            '**/io/**',
+            '**/apache/**',
+            '**/sharing/**',
+            '**/*$Lambda$*.class',
+            '**/*$Sam$*.class',
+            '**/*$WhenMappings.class',
+            '**/databinding/**',
+            '**/BR.*'
+    ]
+
+    def classDirs = [
+            fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+
+    ]
+    def sourceDirs = [
+            "$project.projectDir/src/main/java"
+    ]
+    def executionData = [
+            fileTree(dir: "$project.buildDir/jacoco/", includes: ['**/*.exec', '**/*.ec'])
+    ]
+
+    getSourceDirectories().setFrom(sourceDirs)
+    getClassDirectories().setFrom(classDirs)
+    getExecutionData().setFrom(executionData)
+
+    doLast() {
+        print "Coverage Report: file://${reports.html.getOutputLocation().get()}/index.html"
+    }
+}

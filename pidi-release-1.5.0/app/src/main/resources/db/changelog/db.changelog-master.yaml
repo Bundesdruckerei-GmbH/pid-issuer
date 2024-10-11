@@ -1,0 +1,25 @@
+#
+# Copyright Bundesdruckerei 2024. Licensed under EUPL-1.2, see the accompanying license file.
+#
+
+databaseChangeLog:
+  - include:
+      file: db/changelog/db.changelog-PIDI-12_database_setup.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-325_create_eid_session_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-236_create_pidi_session_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-326_add_redirect_url_to_session_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-783_add_refresh_token_digest_to_session_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-237_add_created_expires_to_session_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-1327_create_pidi_nonce_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-1386_create_pin_retry-counter_table.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-1989_delete_obsolete_request_type_at_pidi_session.yaml
+  - include:
+      file: db/changelog/db.changelog-PIDI-2093_add_pid_issuer_session_id_to_session_table.yaml

@@ -1,0 +1,78 @@
+{
+  "credential_issuer": "https://credential-issuer.example.com",
+  "authorization_servers": [
+    "https://server.example.com"
+  ],
+  "credential_endpoint": "https://credential-issuer.example.com",
+  "batch_credential_endpoint": "https://credential-issuer.example.com/batch_credential",
+  "deferred_credential_endpoint": "https://credential-issuer.example.com/deferred_credential",
+  "display": [
+    {
+      "name": "Example University",
+      "locale": "en-US"
+    },
+    {
+      "name": "Example Université",
+      "locale": "fr-FR"
+    }
+  ],
+  "credential_configurations_supported": {
+    "IdentityCredential": {
+      "format": "vc+sd-jwt",
+      "scope": "IdentityCredential_SD-JWT-VC",
+      "cryptographic_binding_methods_supported": [
+        "did:example"
+      ],
+      "cryptographic_signing_alg_values_supported": [
+        "ES256K"
+      ],
+      "display": [
+        {
+          "name": "IdentityCredential",
+          "locale": "en-US",
+          "background_color": "#12107c",
+          "text_color": "#FFFFFF"
+        }
+      ],
+      "vct": "IdentityCredential",
+      "claims": {
+        "given_name": {
+          "display": [
+            {
+              "name": "Given Name",
+              "locale": "en-US"
+            },
+            {
+              "name": "Vorname",
+              "locale": "de-DE"
+            }
+          ]
+        },
+        "last_name": {
+          "display": [
+            {
+              "name": "Surname",
+              "locale": "en-US"
+            },
+            {
+              "name": "Nachname",
+              "locale": "de-DE"
+            }
+          ]
+        },
+        "email": {},
+        "phone_number": {},
+        "address": {
+          "street_address": {},
+          "locality": {},
+          "region": {},
+          "country": {}
+        },
+        "birthdate": {},
+        "is_over_18": {},
+        "is_over_21": {},
+        "is_over_65": {}
+      }
+    }
+  }
+}

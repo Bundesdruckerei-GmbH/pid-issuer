@@ -1,0 +1,59 @@
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.md
+
+[versions]
+cbor = "4.5.6"
+cose = "1.1.0"
+nimbusds-jwt = "9.40"
+bc = "1.78.1"
+kotlin = "2.0.20"
+kotlinx = "1.7.2"
+assertk = "0.28.1"
+spring-boot = "3.3.3"
+jackson-kotlin = "2.17.2"
+status-list = "0.0.3"
+kotlinx-jsonpath = "1.0.0"
+mockk = "1.13.12"
+jsonassert = "1.5.3"
+springmockk = "4.0.2"
+snakeyaml = "2.3"
+mdoc-core = "0.19.0"
+sdjwt = "0.5.1"
+junit = "5.11.0"
+slf4j = "2.0.16"
+apache-httpclient = "4.5.14"
+caffeine = "3.1.8"
+
+[libraries]
+nimbusds-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusds-jwt" }
+bcprov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bc" }
+bcpkix = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bc" }
+cbor = { group = "com.upokecenter", name = "cbor", version.ref = "cbor" }
+cose = { group = "com.augustcellars.cose", name = "cose-java", version.ref = "cose" }
+jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson-kotlin" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+apache-httpclient = { group = "org.apache.httpcomponents", name = "httpclient", version.ref = "apache-httpclient" }
+caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
+
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx" }
+kotlinx-serialization-jsonpath = { group = "io.github.nomisrev", name = "kotlinx-serialization-jsonpath", version.ref = "kotlinx-jsonpath" }
+
+spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
+
+status-list = { group = "de.bdr.ssi", name = "status-list", version.ref = "status-list" }
+mdoc-core = { group = "de.bundesdruckerei.mdoc.kotlin", name = "mdoc-core", version.ref = "mdoc-core" }
+sdjwt = { group = "eu.europa.ec.eudi", name = "eudi-lib-jvm-sdjwt-kt", version.ref = "sdjwt" }
+
+test-assertk = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertk" }
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test-jsonassert = { group = "org.skyscreamer", name = "jsonassert", version.ref = "jsonassert" }
+test-springmockk = { group = "com.ninja-squad", name = "springmockk", version.ref = "springmockk" }
+test-yaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+test-junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+test-junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit" }
+
+[bundles]
+test = ["test-assertk", "test-jsonassert", "test-mockk", "test-yaml", "test-junit", "test-junit-jupiter-params"]
+test-spring = ["test-springmockk", "spring-boot-starter-test"]
