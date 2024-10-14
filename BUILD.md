@@ -2,7 +2,7 @@
 
 This document contains the instructions to build the PID Issuer from the open source delivery.
 
-> **_NOTE:_**  Commands in this document where tested on ubuntu linux.
+> **_NOTE:_**  Commands in this document were tested on ubuntu linux.
 
 ## Prerequisites
 
