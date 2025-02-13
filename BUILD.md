@@ -1,97 +1,91 @@
 # PID Issuer
 
-This document contains the instructions to build the PID Issuer from the open source delivery.
-
-> **_NOTE:_**  Commands in this document were tested on ubuntu linux.
+This document contains the instructions to build the PID Issuer from the source delivery.
 
 ## Prerequisites
 
-1. The hostname `pidi.localhost.bdr.de` needs to point to `localhost`. In most cases this domain should be resolved by
-   your dns provider. Some provider don't resolve domains which point to `localhost`. A different solution is needed
-   then, e.g. add it to the local `hosts`file.
-2. Java 21 needs to be installed. This instruction is tested with eclipse temurin 21.0.3 installed
-   by [sdk man](https://sdkman.io/) on ubuntu linux.
-3. Docker and docker compose need to be installed and running. The current user needs access to it, e.g. needs to be in
-   the correct group.
+1. The hostname `pidi.localhost.bdr.de` needs to point to `localhost`.
+2. Java 21 needs to be installed.
+3. Docker and docker compose need to be installed.
+4. For revocation of PIDs npm need to be installed. The [AusweisApp-2](https://www.ausweisapp.bund.de/en/home) should run on the same device.
 
-## Building the dependency mdoc-sdk-0.19.0
+This instruction is testet with eclipse temurin 21.0.3 installed by [sdk man](https://sdkman.io/) on ubuntu linux, docker 27.4.0 and the latest lts version 10.9.2 of npm.
 
-Enter the directory `mdoc-sdk-0.19.0` and run the following command: `./gradlew build publishToMavenLocal`.
+## Configuring the eID integration
+Open `pidi-release-1.6.1/app/src/main/resources/application.properties` and edit the following properties:
 
-## Building the dependency openid4vc-libraries-0.14.6
+Configuration provided by the eID provider:
+* **pidi.identification.server.url**\
+  URL of the eID providers endpoint receiving SAMLAuthenticationRequests
+* **pidi.identification.service-provider-name**\
+  The identifier to be used for the ProviderName field of the SAML Authentication Request.
+* **pidi.identification.server.certificate-sig-paths**\
+  x.509 signature certificate of the eID provider (used for checking the signature of the eID providers SAML Authentication Responses)
+* **pidi.identification.server.certificate-enc-path**\
+  x.509 encryption certificate of the eID provider (used for encrypting your SAML Authentication Requests to the eID provider)
 
-Enter the directory `openid4vc-libraries-0.14.6` and run the following command: `./gradlew build publishToMavenLocal`.
+Configuration of your keystore to be used for signing SAML Authentication Requests:
+* **pidi.identification.xmlsig-keystore.path**\
+  Path of the PKCS#12 keystore containing your key and certificate for signing the SAML Authentication Requests.
+* **pidi.identification.xmlsig-keystore.alias**\
+  Alias of your signing key and certificate in the keystore.
+* **pidi.identification.xmlsig-keystore.password**\
+  Password for the keystore and signing key (must be equal).
 
-### Configuring the eID integration
+Configuration of your keystore to be used for decrypting SAML Authentication Responses:
+* **pidi.identification.xmlenc-keystore.path**\
+  Path of the PKCS#12 keystore containing your key and certificate for decrypting the SAML Authentication Responses.
+* **pidi.identification.xmlenc-keystore.alias**\
+  Alias of your encryption key and certificate in the keystore.
+* **pidi.identification.xmlenc-keystore.password**\
+  Password for the keystore and encryption key (must be equal).
 
-The PID Issuer is a [Spring Boot](https://docs.spring.io/spring-boot/index.html) application. There
-are [several ways to configure it](https://docs.spring.io/spring-boot/reference/features/external-config.html).
-In this documentation we use environment variables.
-Key material should be placed in the folder `pidi-release-1.5.0/app/eid`. In this example the keys have the names from
-the governikus pandstar sdk samples.
+eID is also integrated in revocation-backend. Open `revocation-backend-1.6.1/src/main/resources/application.yaml`
+and change the same properties (not with prefix `pidi` but with prefix `revocation`).
 
-Open `pidi-release-1.5.0/app/compose.yaml` and edit the following properties:
+## Building the dependency mdoc-sdk-0.20.0-RC4
 
-```yaml
-services:
-  pidi.localhost.bdr.de:
-    # skipped properties
-    environment:
-      # skipped keys
-      # Configuration of eid identification, settings fit to the governikus sdk samples
-      # x.509 signature certificate of the eID provider (used for checking the signature of the eID providers SAML Authentication Responses)
-      - PIDI_IDENTIFICATION_SERVER_CERTIFICATESIGPATHS=/opt/keys/test/panstar-signature.cer
-      # x.509 encryption certificate of the eID provider (used for encrypting your SAML Authentication Requests to the eID provider)
-      - PIDI_IDENTIFICATION_SERVER_CERTIFICATEENCPATH=/opt/keys/test/panstar-encryption.cer
-      # URL of the eID providers endpoint receiving SAMLAuthenticationRequests
-      - PIDI_IDENTIFICATION_SERVER_URL=https://dev.id.governikus-eid.de/gov_autent/async
-      # Path of the PKCS#12 keystore containing your key and certificate for signing the SAML Authentication Requests.
-      - PIDI_IDENTIFICATION_XMLSIGKEYSTORE_PATH=/opt/keys/test/Governikus_GmbH_&_Co._KG_Localhost_SAML_Signature_620935.p12
-      # Alias of your signing key and certificate in the keystore
-      - PIDI_IDENTIFICATION_XMLSIGKEYSTORE_ALIAS=saml-signature
-      # Password for the keystore and signing key (must be equal)
-      - PIDI_IDENTIFICATION_XMLSIGKEYSTORE_PASSWORD=620935
-      # Path of the PKCS#12 keystore containing your key and certificate for decrypting the SAML Authentication Responses
-      - PIDI_IDENTIFICATION_XMLENCKEYSTORE_PATH=/opt/keys/test/Governikus_GmbH_&_Co._KG_Localhost_SAML_Encryption_466035.p12
-      # Alias of your encryption key and certificate in the keystore
-      - PIDI_IDENTIFICATION_XMLENCKEYSTORE_ALIAS=saml-encryption
-      # Password for the keystore and encryption key (must be equal)
-      - PIDI_IDENTIFICATION_XMLENCKEYSTORE_PASSWORD=466035
-      # The identifier to be used for the ProviderName field of the SAML Authentication Request.
-      - PIDI_IDENTIFICATION_SERVICEPROVIDERNAME=https://localhost:8443
-```
+Enter the directory `mdoc-sdk-0.20.0-RC4` and run the following command: `./gradlew build publishToMavenLocal`.
 
-### Building
+## Building the dependency openid4vc-libraries-0.15.1-RC1
 
+Enter the directory `openid4vc-libraries-0.15.1-RC1` and run the following command: `./gradlew build publishToMavenLocal`.
+
+## Building the application status-list-service 0.1.11
+
+Enter the directory `status-list-service-0.1.11` and run the following command: `./gradlew build --exclude-task test`.
+For tests with Redis in Docker Container run `./gradlew testRedis test` and for tests with Postgres in Docker Container `./gradlew testPostgres test`.
+
+## Building the application revocation-backend 1.6.1
+
+Enter the directory `revocation-backend-1.6.1` and run the following command: `./mvnw verify -DskipTests`.
+For running integration tests the eID integration needs to be configured (see next chapter) in `src/test/resources/application.yaml`
+and there must be a running instance of status-list-service.
+
+## Building the application revocation-frontend 1.6.1
+
+Enter the directory `revocation-frontend-1.6.1` and run the following commands: `npm install` and `npm run build`.
+For tests run `npm run ng -- test --no-watch --karma-config karma.conf.js --browsers=ChromeHeadlessNoSandbox`.
+
+## Building PID Issuer
 Once you have configured the eID integration, the PID Issuer can be built with the
 actual eID integration. To build the PID issuer with activated eID integration,
-change directory to `pidi-release-1.5.0\app` and
-run the following command: `./mvnw -P'!full' verify`.
+change directory to `pidi-release-1.6.1\app` (sub directory __app__!) and
+run the following command: `./mvnw verify -DskipTests`.
+For running integration tests the eID integration needs to be configured (see above) in `src/main/resources/application.yaml`
+and there must be a running instance of status-list-service.
 
-### Running
-
-The PID Issuer requires a Postgres database for its execution. A suitable database
-container image and migration scripts for creating the required tables are provided
-as a docker compose setup.
-
-The docker compose setup also contains the [AusweisApp container](https://www.ausweisapp.bund.de/sdk/container.html)
-so the eID integration can be tested.
-
-To start the whole stack, enter directory `pidi-release-1.5.0\app`
+## Running
+The PID Issuer requires a Postgres database and a Rabbit MQ for its execution. The revocation-backend requires a Postgres database and the status-list-service requires a Redis storage.
+Suitable container images for Postgres and Rabbit and migration scripts for creating the required tables are provided
+as a docker compose setup. To start the container, enter directory `docker-compose`
 and run the following commands:
 
 ```
-docker compose --profile fullStack up
+docker compose up
 ```
+At first change directory to `status-list-service-0.1.11` and run the command: `./gradlew bootRunRedis`,   
+Then change directory to `revocation-backend-1.6.1` and run the command: `./mvnw spring-boot:run`.   
+And finally change directory to `pidi-release-1.6.1\app` and run the following command: `./mvnw spring-boot:run`
 
-### Running the integration tests
-
-The PID Issuer source code is shipped with several integration tests which run against a deployed version of the issuer.
-To run these the issuer should be started by docker compose, like described before.
-
-To start thetests, enter directory `pidi-release-1.5.0\app`
-and run the following commands:
-
-```
-./mvnw -P'!full' verify -D'test.groups=remote'
-```
+For revocation of PIDs change directory to `revocation-frontend-1.6.1` and run the command: `npm run start`
