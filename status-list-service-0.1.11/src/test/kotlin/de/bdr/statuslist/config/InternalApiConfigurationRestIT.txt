@@ -1,0 +1,64 @@
+/*
+ * Copyright 2024 Bundesdruckerei GmbH
+ * For the license see the accompanying file LICENSE.md
+ */
+package de.bdr.statuslist.config
+
+import assertk.assertThat
+import assertk.assertions.isNotNull
+import com.fasterxml.jackson.annotation.JsonProperty
+import io.restassured.module.webtestclient.kotlin.extensions.Extract
+import io.restassured.module.webtestclient.kotlin.extensions.Given
+import io.restassured.module.webtestclient.kotlin.extensions.Then
+import io.restassured.module.webtestclient.kotlin.extensions.When
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.reactive.server.WebTestClient
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("docker-api-port")
+class InternalApiConfigurationRestIT(
+    @Value("\${server.port}") val port: Int,
+    @Value("\${server.internal-api-port}") val internalApiPort: Int,
+    @Value("\${server.internal-api-prefix}") val internalApiPrefix: String,
+    @Value("\${app.public-url}") private val publicUrl: String,
+    //    @Autowired private val webTestClient: WebTestClient
+    //    @Autowired val restTemplate: TestRestTemplate
+) {
+    private val apiKey = "366A9069-2965-4667-9AD2-5C51D71046D8"
+    private val listIdentifier = "verified-email"
+
+    val webTestClient =
+        WebTestClient.bindToServer()
+            .baseUrl("http://localhost:$internalApiPort/$internalApiPrefix")
+            .build()
+
+    //    val webTestClient = MockMvcBuilders.standaloneSetup().build()
+
+    @Test
+    fun `should get reference on api port and list on default port`() {
+        val response =
+            Given {
+                webTestClient(webTestClient)
+                header("x-api-key", apiKey)
+            } When
+                {
+                    post(
+                        "http://localhost:$internalApiPort/$internalApiPrefix/$listIdentifier/new-reference"
+                    )
+                } Then
+                {} Extract
+                {
+                    body()
+                }
+        assertThat(response).isNotNull()
+    }
+}
+
+internal data class ListUri(
+    val bits: Int,
+    val lst: String,
+    @JsonProperty("aggregation_uri") val aggregationUri: String,
+)

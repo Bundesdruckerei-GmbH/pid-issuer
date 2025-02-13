@@ -1,0 +1,368 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+openapi: 3.0.3
+info:
+  x-api-id: b9843475-9eb5-4701-918e-699252f00c29
+  x-audience: external-public
+  title: Revocation service identification
+  description: Public API for the revocation service for identification
+  version: 0.1.0
+
+paths:
+  /eid/auth-url:
+    summary: 'request from Info App, TR-03124'
+    get:
+      summary: initiates the authentication
+      tags:
+        - identification
+      description: >-
+        request a session ID and the URL that is sent via a parameter to the
+        eID-Client
+      operationId: getAuthenticationUrl
+      responses:
+        '200':
+          description: 'success, created the unique URL'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationUrlResponse'
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+  /eid/tcToken:
+    summary: 'request from the eID-Client, TR-03124'
+    get:
+      summary: requests the TC Token for the Trusted Channel
+      tags:
+        - eid-client identification
+      description: we redirect to the eID-Server with a SAML Request as URL parameter
+      operationId: getTcTokenRedirectUrl
+      parameters:
+        - in: query
+          name: auth
+          description: the authentication id as returned from _getAuthenticationUrl_
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: true
+      responses:
+        '200':
+          description: >-
+            failure, TC Token with error code that redirects the eID-Client to
+            an error page
+          content:
+            text/xml:
+              example: >-
+                <TCTokenType> <ServerAddress></ServerAddress>
+                <SessionIdentifier></SessionIdentifier>
+                <RefreshAddress></RefreshAddress>
+                <CommunicationErrorAddress>https://personalausweisportal.de/too_bad.html</CommunicationErrorAddress>
+                <Binding></Binding> </TCTokenType>
+        '303':
+          description: >-
+            success, redirect to the eID-Server (that will generate the TC
+            Token)
+          headers:
+            Location:
+              required: true
+              description: >-
+                contains the SAMLRequest (long value) and Signature as URL
+                parameters
+              schema:
+                type: string
+                maxLength: 5000
+        '400':
+          description: the data passed in the parameters is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 400
+                message: Bad request
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+  /eid/saml-consumer:
+    summary: 'response from the eID-Server, TR-03124'
+    get:
+      summary: consumes the SAML Response from the eID-Server
+      tags:
+        - eid-client identification
+      description: >-
+        the eID-Server sends the response and we redirect the eID-Client to
+        continue in the authentication flow, TR-03124
+      operationId: getSamlConsumer
+      parameters:
+        - in: query
+          name: SAMLResponse
+          description: the SAML Response (long value)
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: RelayState
+          description: provides additional information
+          schema:
+            type: string
+            maxLength: 80
+          required: true
+        - in: query
+          name: SigAlg
+          description: signature algorithm
+          schema:
+            type: string
+            maxLength: 80
+            example: http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256
+          required: true
+        - in: query
+          name: Signature
+          description: signature
+          schema:
+            type: string
+            maxLength: 1000
+          required: true
+      responses:
+        '303':
+          description: 'success or failure, redirect to the next step or to an error page'
+          headers:
+            Location:
+              required: true
+              schema:
+                type: string
+        '400':
+          description: the data passed in the parameters is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 400
+                message: Bad request
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+  /eid/auth-loggedin:
+    summary: 'request from Info App, TR-03124'
+    get:
+      summary: finishes the authentication and renews the session
+      tags:
+        - identification
+      description: >-
+        binds the requests from the eID-Client to the session ID with the Info
+        APP; the session ID and perhaps the session duration change
+      operationId: finishLogin
+      parameters:
+        - in: query
+          name: ref
+          description: relates this request to the call on the SAML consumer URL
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: true
+        - in: header
+          name: X-Session-ID
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: false
+          description: 'Session ID, base64 URL encoded'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedInResponse'
+              example:
+                sessionId: verySecret
+                duration: 600
+        '400':
+          description: the data passed in the parameters is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 400
+                message: Bad request
+        '401':
+          description: the security parameters do not belong to a valid session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 401
+                message: Unauthorized
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+  /eid/auth-refresh:
+    summary: 'request from Info App, TR-03124'
+    get:
+      summary: refreshes the session and extends the session timeout
+      tags:
+        - identification
+      description: >-
+        refreshes the session timeout for an authenticated session until the
+        maximum session timeout is reached. Returns the remaining session
+        duration in seconds if the amount is greater than 0. In case the session
+        is already expired, status 401 will be returned.
+      operationId: refreshSession
+      parameters:
+        - in: header
+          name: X-Session-ID
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: false
+          description: 'Session ID, base64 URL encoded'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedInResponse'
+              example:
+                sessionId: verySecret
+                duration: 600
+        '400':
+          description: the data passed in the parameters is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 400
+                message: Bad request
+        '401':
+          description: the security parameters do not belong to a valid session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 401
+                message: Unauthorized
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+  /eid/auth-drop:
+    summary: 'request from Info App, TR-03124'
+    get:
+      summary: terminates the authenticated session
+      tags:
+        - identification
+      description: the Info Service should terminate its Authentication session
+      operationId: terminateAuthentication
+      parameters:
+        - in: header
+          name: X-Session-ID
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: false
+          description: 'Session ID, base64 URL encoded'
+      responses:
+        '204':
+          description: 'success, the authentication session is no longer valid'
+        '400':
+          description: the data passed in the parameters is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 400
+                message: Bad request
+        '500':
+          description: the server encountered an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: 500
+                message: Internal server error
+
+components:
+  schemas:
+    AuthenticationUrlResponse:
+      type: object
+      properties:
+        tcTokenUrl:
+          type: string
+          maxLength: 400
+          description: URL-encoded
+          example: >-
+            http%3A%2F%2Frevocation.de%2Feid%2FtcToken
+        sessionId:
+          $ref: '#/components/schemas/IdParameter'
+        duration:
+          $ref: '#/components/schemas/Duration'
+      required:
+        - tcTokenUrl
+        - sessionId
+        - duration
+    LoggedInResponse:
+      description: The session data after login.
+      type: object
+      required:
+        - sessionId
+        - duration
+      properties:
+        sessionId:
+          $ref: '#/components/schemas/IdParameter'
+        duration:
+          $ref: '#/components/schemas/Duration'
+    IdParameter:
+      type: string
+      maxLength: 80
+      pattern: '[a-zA-Z0-9_-]+(?:=|%3D|%3d){0,2}$'
+    Duration:
+      type: integer
+      minimum: 0
+      description: duration of the authenticated session in seconds
+    ErrorResponse:
+      description: the response to be sent after an error occurred
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: error code identifying the error cause
+        message:
+          type: string
+          description: short error description

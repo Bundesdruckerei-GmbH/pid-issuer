@@ -1,0 +1,9 @@
+<svg
+  class="icon"
+  [attr.role]="titleText ? 'img' : 'presentation'"
+  [ngStyle]="isInteger(rotation) ? { 'transform': 'rotate(' + rotation + 'deg)' } : {}">
+  @if (titleText) {
+    <title>{{ titleText }}</title>
+  }
+  <use attr.href="{{ url }}"></use>
+</svg>

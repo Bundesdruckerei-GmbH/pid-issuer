@@ -1,0 +1,37 @@
+<div
+  class="alert-container shadow-level-2 p-a-l"
+  [class.border-left]="borderLeft"
+  [class.alert-error]="type === AlertType.Error"
+  [class.alert-warning]="type === AlertType.Warning"
+  [class.alert-success]="type === AlertType.Success"
+  [class.alert-info]="type === AlertType.Info">
+  @switch (type) {
+    @case (AlertType.Error) {
+      <icon class="icon-m alert-icon" titleText="Fehler" url="icons/close_circle.svg#close_circle"/>
+    }
+    @case (AlertType.Warning) {
+      <icon class="icon-m alert-icon" titleText="Warnung" url="icons/alert_circle.svg#alert_circle"/>
+    }
+    @case (AlertType.Info) {
+      <icon class="icon-m alert-icon" titleText="Info" url="icons/info_circle.svg#info_circle"/>
+    }
+    @case (AlertType.Success) {
+      <icon class="icon-m alert-icon" titleText="Erfolg" url="icons/check_circle.svg#check_circle"/>
+    }
+  }
+  <div class="content">
+    <div class="headline-5 title" [attr.id]="id && id + '-title'">{{titleText}}</div>
+    <div class="text-s description m-t-s" [attr.id]="id && id + '-content'">
+      <ng-content/>
+    </div>
+  </div>
+  @if (closeable) {
+    <button
+      class="close-button"
+      [attr.id]="id && id + '-close-button'"
+      (click)="alertClose.emit(id)"
+      aria-label="close notification">
+      <icon class="icon-m" titleText="close" url="icons/close.svg#close"/>
+    </button>
+  }
+</div>

@@ -1,0 +1,10 @@
+@use 'src/styles';
+
+p {
+  @extend .m-b-s;
+}
+
+h4 {
+  @extend .text-s;
+  @extend .m-b-s;
+}

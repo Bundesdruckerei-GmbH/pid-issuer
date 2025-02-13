@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2024 Bundesdruckerei GmbH
+    For the license see the accompanying file LICENSE.MD.
+
+-->
+
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd ">
+    <suppress>
+        <notes><![CDATA[FP we do not use the C-version of the OpanSAML library]]></notes>
+        <packageUrl regex="true">^pkg:maven/de\.governikus\.opensaml\.extension/opensaml-governikus-extension.*$
+        </packageUrl>
+        <cve>CVE-2017-16853</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[this is Governikus extension, not the OpenSAML library]]></notes>
+        <packageUrl regex="true">^pkg:maven/de\.governikus\.opensaml\.extension/opensaml-governikus-extension.*$</packageUrl>
+        <cve>CVE-2013-6440</cve>
+    </suppress>
+</suppressions>

@@ -1,0 +1,62 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+GET http://localhost:8080/eid/auth-url
+Accept: application/json
+
+> {%
+    const tcTokenUrl = jsonPath(response.body, "$.tcTokenUrl");
+    const sessionId = jsonPath(response.body, "$.sessionId");
+
+    client.global.set("tcTokenUrl", tcTokenUrl)
+    client.global.set("sessionId", sessionId)
+    console.log("tcTokenUrl: " + client.global.get("tcTokenUrl"))
+    console.log("SessionId: " + client.global.get("sessionId"))
+%}
+
+###
+# @no-redirect
+< {%
+    request.variables.set("tcTokenUrl", client.global.get("tcTokenUrl"))
+%}
+GET http://127.0.0.1:24727/eID-Client?tcTokenURL={{tcTokenUrl}}
+
+> {%
+    const responceLocation = response.headers.valueOf("location");
+
+    const ref = responceLocation.substring(responceLocation.indexOf("=") + 1);
+    client.global.set("ref", ref)
+    console.log("ref: " + ref)
+%}
+
+###
+< {%
+    request.variables.set("ref", client.global.get("ref"))
+    request.variables.set("sessionId", client.global.get("sessionId"))
+%}
+GET http://localhost:8080/eid/auth-loggedin?
+    ref={{ref}}
+X-Session-ID: {{sessionId}}
+
+> {%
+    const newSessionId = jsonPath(response.body, "$.sessionId");
+    console.log("newSessionId: " + newSessionId)
+
+    client.global.set("newSessionId", newSessionId)
+%}
+
+###
+< {%
+    request.variables.set("newSessionId", client.global.get("newSessionId"))
+%}
+GET http://localhost:8080/eid/auth-refresh
+X-Session-ID: {{newSessionId}}
+
+###
+< {%
+    request.variables.set("newSessionId", client.global.get("newSessionId"))
+%}
+GET http://localhost:8080/eid/auth-drop
+X-Session-ID: {{newSessionId}}

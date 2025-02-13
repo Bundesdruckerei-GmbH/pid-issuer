@@ -1,0 +1,21 @@
+<div class="dialog-header m-b-xl">
+  <h2 class="headline-3" id="confirm-dialog-title">{{ dialogContent.title }}</h2>
+  <button
+    class="close-button"
+    (click)="closeCancel()"
+    (keyup.escape)="closeCancel()"
+    aria-label="close dialog">
+    <icon class="icon-m" titleText="close" url="icons/close.svg#close"/>
+  </button>
+</div>
+
+<div class="text-s m-b-xl" [innerHTML]="dialogContent.content"></div>
+
+<div class="dialog-footer">
+  <basic-button type="button" class="ok-button" (click)="closeOk()">
+    {{dialogContent.okButtonLabel || 'Ok'}}
+  </basic-button>
+  <basic-button type="button" class="cancel-button" bordered (click)="closeCancel()">
+    {{dialogContent.cancelButtonLabel || 'Cancel'}}
+  </basic-button>
+</div>

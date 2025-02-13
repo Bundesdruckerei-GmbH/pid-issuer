@@ -1,0 +1,58 @@
+services:
+  # Redis
+  status-list-redis:
+    image: redis:7.4.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  status-list-postgres:
+    image: postgres:16.6-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=statuslistdb
+      - POSTGRES_USER=status_list_mig
+      - POSTGRES_PASSWORD=status_list_mig
+      - APP_USER=status_list_app
+      - APP_USER_PASSWORD=status_list_app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d statuslistdb -U status_list_mig"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  status-list-flyway:
+    image: flyway/flyway:10.22-alpine
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "flyway -connectRetries=60 migrate && echo done > /tmp/done.txt && sleep infinity"]
+    depends_on:
+      - status-list-postgres
+    environment:
+      - FLYWAY_PLACEHOLDERS_APP_USER=status_list_app
+      - FLYWAY_URL=jdbc:postgresql://status-list-postgres/statuslistdb
+      - FLYWAY_USER=status_list_mig
+      - FLYWAY_PASSWORD=status_list_mig
+      - FLYWAY_LOCATIONS=filesystem:/flyway/migrations
+    volumes:
+      - ./db/migrations:/flyway/migrations
+    healthcheck:
+      test: ["CMD-SHELL", "cat /tmp/done.txt"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+volumes:
+  postgres:
+  redis:

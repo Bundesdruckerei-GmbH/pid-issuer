@@ -1,0 +1,49 @@
+@use 'src/styles';
+
+@mixin core-button() {
+  @include styles.button-style-none();
+  border-radius: 4px;
+  text-decoration-line: none;
+
+  &:focus {
+    outline: styles.$blue40 solid 3px;
+    outline-offset: 1px;
+  }
+}
+
+@mixin core-button-blue() {
+  @include core-button;
+  &:focus {
+    background-color: styles.$blue70;
+  }
+  &:hover {
+    background-color: styles.$blue60;
+  }
+}
+
+@mixin navigation-button-list() {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+
+@mixin navigation-button($active-marker-width: 2px, $active-marker-offset: 4px, $padding: 12px) {
+  @include core-button-blue();
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: $padding;
+
+  &.active {
+    @include styles.text-highlight;
+
+    &::before {
+      position: absolute;
+      display: inline-block;
+      bottom: $active-marker-offset;
+      content: "";
+      width: calc(100% - (2 * $padding));
+      border-bottom: $active-marker-width solid styles.$blue5;
+    }
+  }
+}

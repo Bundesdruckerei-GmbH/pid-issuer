@@ -1,0 +1,63 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+spring:
+  application:
+    name: revocation-service-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5431/revocationdb
+    username: revocation_app
+    password: revocation_app
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        ddl-auto: none
+        boot:
+          allow_jdbc_metadata_access: false
+  docker:
+    compose:
+      skip:
+        in-tests: false
+  rabbitmq:
+    listener:
+      simple:
+        default-requeue-rejected: false
+
+statuslistservice:
+  restclient:
+    api-base-path: http://localhost:8085
+    api-key: 366A9069-2965-4667-9AD2-5C51D71046D8
+
+logging:
+  level:
+    de.bdr.revocation: debug
+
+revocation:
+  identification:
+    logged-in-path: /logged-in
+    tc-token-path: /eid/tcToken
+    saml-consumer-path: /eid/saml-consumer
+    dump-pseudonym: true
+    base-path:
+    base-url: http://pidi.localhost.bdr.de:8080
+    frontend-url: http://pidi.localhost.bdr.de:4200
+    initial-session-duration: 1800s
+    min-authenticated-session-duration: 600s
+    max-authenticated-session-duration: 3600s
+
+    server.url: https://eid-epan5-ref.eid-service.de:443/gov_autent/async
+    server.certificate-sig-paths: ./eid/signature.pem
+    server.certificate-enc-path: ./eid/encryption.pem
+
+    service-provider-name: https://demo.pid-issuer.bundesdruckerei.de
+
+    xmlsig-keystore.path: ./eid/TestService.p12
+    xmlsig-keystore.alias: testservice-signature
+    xmlsig-keystore.password: private
+    xmlenc-keystore.path: ./eid/TestService.p12
+    xmlenc-keystore.alias: testservice-encryption
+    xmlenc-keystore.password: private
+

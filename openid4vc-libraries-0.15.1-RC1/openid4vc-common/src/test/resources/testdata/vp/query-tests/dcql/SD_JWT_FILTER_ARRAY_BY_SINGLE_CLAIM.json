@@ -1,0 +1,105 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "array",
+              null
+            ],
+            "values": [
+              "correct"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct-only",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            "correct"
+          ]
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-only",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            "incorrect"
+          ]
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "correct-and-incorrect-sd",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            "correct",
+            "incorrect"
+          ]
+        },
+        "discloseable": [
+          [
+            "array",
+            0
+          ],
+          [
+            "array",
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "id": "correct-and-incorrect-no-sd",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            "correct",
+            "incorrect"
+          ]
+        },
+        "discloseable": []
+      }
+    }
+  ],
+  "expected": [
+    {
+      "query": {
+        "id": "correct-only",
+        "disclosed": []
+      }
+    },
+    {
+      "query": {
+        "id": "correct-and-incorrect-sd",
+        "disclosed": [
+          [
+            "array",
+            0
+          ]
+        ]
+      }
+    }
+  ]
+}

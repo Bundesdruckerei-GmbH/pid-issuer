@@ -1,0 +1,14 @@
+.gradle/
+.idea/
+build/
+out/
+version.txt
+
+# Mac
+.DS_Store
+
+/status-lists/cbor/*
+/status-lists/cwt/*
+/status-lists/json/*
+/status-lists/jwt/*
+/status-lists/*.metadata

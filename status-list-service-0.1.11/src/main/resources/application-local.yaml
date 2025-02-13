@@ -1,0 +1,48 @@
+logging:
+  level:
+    de.bdr.statuslist: trace
+
+server:
+  port: 8085
+  internal-api-port: ${server.port}
+  internal-api-prefixes: /pools, /status-lists
+
+app:
+  public-url: http://localhost:8085
+  storage-directory: status-lists
+  cache-duration: PT24H
+  status-list-pools:
+    verified-email:
+      api-key: 366A9069-2965-4667-9AD2-5C51D71046D8
+      issuer: http://localhost:8080
+      size: 128
+      bits: 1
+      precreation:
+        lists: 1
+        check-delay: 10s
+      prefetch:
+        threshold: 16
+        capacity: 32
+        on-underflow: delay
+      update-interval: 10s
+      list-lifetime: 15s
+      signer:
+        keystore: classpath:/keys/keystore.p12
+        password: test
+    test-pool-2:
+          api-key: 366A9069-2965-4667-9AD2-5C51D71046D3
+          issuer: http://localhost:8080
+          size: 128
+          bits: 1
+          precreation:
+            lists: 1
+            check-delay: 10s
+          prefetch:
+            threshold: 16
+            capacity: 32
+            on-underflow: delay
+          update-interval: 10s
+          list-lifetime: 15s
+          signer:
+            keystore: classpath:/keys/keystore.p12
+            password: test

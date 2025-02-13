@@ -1,0 +1,91 @@
+@use 'src/styles';
+
+.basic-button {
+  width: 100%;
+  height: calc(30px + 1.125rem);
+  @extend .p-x-m;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: styles.$blue60;
+  color: styles.$blue5;
+  border: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  border-radius: 4px;
+  transition: all 150ms ease;
+  white-space: nowrap;
+
+  icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    @extend .m-r-s;
+  }
+
+  &:hover {
+    background: styles.$blue80;
+  }
+
+  &:active {
+    background: styles.$blue70;
+  }
+
+  &:focus {
+    outline: styles.$blue40 solid 4px;
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    background: styles.$grey50;
+    color: styles.$grey10;
+  }
+
+  &.bordered {
+    color: styles.$blue60;
+    border: 1px solid styles.$blue60;
+    background: styles.$white;
+
+    &:hover {
+      background: styles.$blue60;
+      color: styles.$blue5;
+    }
+
+    &:disabled {
+      background: styles.$grey10;
+      color: styles.$grey50;
+      border-color: styles.$grey50;
+    }
+  }
+
+  &.small {
+    font-size: 1rem;
+
+    icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &.single {
+    width: auto;
+    height: auto;
+    color: styles.$blue60;
+    border: none;
+    background: transparent;
+    @extend .p-a-s;
+
+    &:hover {
+      color: styles.$blue80;
+      background: styles.$shadow-color-1;
+    }
+
+    &:active {
+      color: styles.$blue70;
+      background: styles.$shadow-color-1;
+    }
+
+    &:focus {
+      background: styles.$shadow-color-1;
+    }
+  }
+}

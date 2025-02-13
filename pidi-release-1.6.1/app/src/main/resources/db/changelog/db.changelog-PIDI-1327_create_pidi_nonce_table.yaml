@@ -1,0 +1,46 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+databaseChangeLog:
+  - property:
+      name: app.user
+      value: pidi_issuer_app
+      context: pidi
+  - changeSet:
+      id: create_pidi_nonce_table
+      author: dve
+      changes:
+        - createTable:
+            tableName: pidi_nonce
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pidi_nonce_PK
+              - column:
+                  name: nonce
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: expires
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: used
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - sql:
+            endDelimiter: \nGO
+            splitStatements: true
+            sql: GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE pidi_nonce TO ${app.user};
+            stripComments: true

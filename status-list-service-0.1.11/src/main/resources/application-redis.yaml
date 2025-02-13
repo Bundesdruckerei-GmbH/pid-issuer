@@ -1,0 +1,8 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+app:
+  storage-type: redis
+  redis:
+    host: localhost
+    persistence-strategy: append-fsync-always

@@ -1,0 +1,40 @@
+logging:
+  level:
+    de.bdr.statuslist: debug
+
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/statuslistdb
+    username: status_list_app
+    password: status_list_app
+    driverClassName: org.postgresql.Driver
+
+app:
+  public-url: http://localhost:8090
+  storage-directory: status-lists
+  cache-duration: PT24H
+  redis:
+    host: localhost
+    persistence-strategy:
+      append-fsync-always: true
+  status-list-pools:
+    tests:
+      api-key: af05bedc-ec26-472a-af56-f3b862e8e00d
+      issuer: http://localhost:8080
+      size: 50000
+      bits: 1
+      precreation:
+        lists: 1
+        check-delay: 40s
+      prefetch:
+        threshold: 1000
+        capacity: 10000
+        on-underflow: delay
+      update-interval: 10s
+      list-lifetime: 15s
+      signer:
+        keystore: classpath:/keys/keystore.p12
+        password: test

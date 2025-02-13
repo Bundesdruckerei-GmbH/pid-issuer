@@ -1,0 +1,22 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: add_pid_issuer_session_id_to_session_table
+      author: tra
+      changes:
+        - addColumn:
+            tableName: pidi_session
+            columns:
+              - column:
+                  name: pid_issuer_session_id
+                  type: VARCHAR(128)
+        - createIndex:
+            columns:
+              - column:
+                  name: pid_issuer_session_id
+            indexName: pid_issuer_session_id_index
+            tableName: pidi_session

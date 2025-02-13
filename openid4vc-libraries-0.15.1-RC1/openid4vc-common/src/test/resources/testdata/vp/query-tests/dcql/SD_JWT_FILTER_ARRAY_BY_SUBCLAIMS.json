@@ -1,0 +1,234 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "array",
+              null,
+              "a"
+            ],
+            "values": [
+              "correct"
+            ]
+          },
+          {
+            "path": [
+              "array",
+              null,
+              "b"
+            ],
+            "values": [
+              "correct"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct-no-sd",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            {
+              "a": "correct",
+              "b": "correct"
+            },
+            {
+              "a": "correct",
+              "b": "correct"
+            }
+          ]
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "correct-and-incorrect-no-sd",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            {
+              "a": "correct",
+              "b": "correct"
+            },
+            {
+              "a": "correct",
+              "b": "incorrect"
+            }
+          ]
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "correct-and-incorrect-sd-array-elements",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            {
+              "a": "correct",
+              "b": "correct"
+            },
+            {
+              "a": "correct",
+              "b": "incorrect"
+            },
+            {
+              "a": "incorrect",
+              "b": "correct"
+            },
+            {
+              "a": "incorrect",
+              "b": "incorrect"
+            }
+          ]
+        },
+        "discloseable": [
+          [
+            "array",
+            0
+          ],
+          [
+            "array",
+            1
+          ],
+          [
+            "array",
+            2
+          ],
+          [
+            "array",
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "id": "correct-and-incorrect-sd-leaf-claims",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "array": [
+            {
+              "a": "correct",
+              "b": "correct"
+            },
+            {
+              "a": "correct",
+              "b": "incorrect"
+            },
+            {
+              "a": "incorrect",
+              "b": "correct"
+            },
+            {
+              "a": "incorrect",
+              "b": "incorrect"
+            }
+          ]
+        },
+        "discloseable": [
+          [
+            "array",
+            0,
+            "a"
+          ],
+          [
+            "array",
+            0,
+            "b"
+          ],
+          [
+            "array",
+            1,
+            "a"
+          ],
+          [
+            "array",
+            1,
+            "b"
+          ],
+          [
+            "array",
+            2,
+            "a"
+          ],
+          [
+            "array",
+            2,
+            "b"
+          ],
+          [
+            "array",
+            3,
+            "a"
+          ],
+          [
+            "array",
+            3,
+            "b"
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "query": {
+        "id": "correct-no-sd",
+        "disclosed": []
+      }
+    },
+    {
+      "query": {
+        "id": "correct-and-incorrect-sd-array-elements",
+        "disclosed": [
+          [
+            "array",
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "query": {
+        "id": "correct-and-incorrect-sd-leaf-claims",
+        "disclosed": [
+          [
+            "array",
+            0,
+            "a"
+          ],
+          [
+            "array",
+            0,
+            "b"
+          ],
+          [
+            "array",
+            1,
+            "a"
+          ],
+          [
+            "array",
+            2,
+            "b"
+          ]
+        ]
+      }
+    }
+  ]
+}

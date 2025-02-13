@@ -1,0 +1,423 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:24727",
+      "description": "Default mock url"
+    }
+  ],
+  "paths": {
+    "/secondsNotOnOrAfter/{seconds}": {
+      "post": {
+        "tags": [
+          "behaviour-controller"
+        ],
+        "operationId": "setSecondsNotOnOrAfter",
+        "parameters": [
+          {
+            "name": "seconds",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym/{pseudonym}": {
+      "post": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "description": "Set the current pseudonym of the mock",
+        "operationId": "setCurrentPseudonym",
+        "parameters": [
+          {
+            "name": "pseudonym",
+            "description": "the pseudonym of the id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "used",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "card"
+            }
+          },
+          {
+            "name": "familyName",
+            "description": "the family names of the id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym/{folderURL}/{percentageSmartEid}/{percentagePhysicalEid}": {
+      "post": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "description": "Will load pseudonyms from a given sub folder of '/eids/' from the filesystem. The ratio of smart and physical eids can be controlled by the `PERCENTAGE` parameters. Missing to 100 will be filled with random pseudonyms.",
+        "operationId": "setPseudonymFolder",
+        "parameters": [
+          {
+            "name": "folderURL",
+            "description": "The sub folder to load the eids from. The set 'simple' is shipped with the docker image. Other sets have to be provided by docker mounts.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "percentagePhysicalEid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "percentageSmartEid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym/random": {
+      "post": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "description": "Sets the mock to produce random ids on each authentication",
+        "operationId": "setRandomPseudonyms",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym/fixedRandom": {
+      "post": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "operationId": "setRandomPseudonym",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EidData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym/data": {
+      "post": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "operationId": "setEidData",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EidData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EidData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/behaviour/{behaviour}": {
+      "post": {
+        "tags": [
+          "behaviour-controller"
+        ],
+        "operationId": "setCurrentBehaviour",
+        "parameters": [
+          {
+            "name": "behaviour",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Behavior"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Behavior"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/secondsNotOnOrAfter": {
+      "get": {
+        "tags": [
+          "behaviour-controller"
+        ],
+        "operationId": "getSecondsNotOnOrAfter",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pseudonym": {
+      "get": {
+        "tags": [
+          "pseudonym-controller"
+        ],
+        "description": "Get the current pseudonym of the mock - without changing it",
+        "operationId": "getCurrentPseudonym",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eID-Client": {
+      "get": {
+        "tags": [
+          "eid-client-controller"
+        ],
+        "operationId": "eidClient",
+        "parameters": [
+          {
+            "name": "tcTokenURL",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/behaviour": {
+      "get": {
+        "tags": [
+          "behaviour-controller"
+        ],
+        "operationId": "getCurrentBehaviour",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Behavior"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Behavior": {
+        "type": "string",
+        "enum": [
+          "SUCCESS",
+          "STATUS_INTERNAL_ERROR",
+          "OUTDATED_DOCUMENT"
+        ]
+      },
+      "ICAOCountry": {
+        "type": "string",
+        "description": "Country code according to [ICAO Doc 9303](https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf). It is mainly a 3-letter iso country code with extensions and 'D' instead of 'DEU' for Germany.",
+        "pattern": "^D$|^[A-Z]{3}$"
+      },
+      "GeneralPlace": {
+        "type": "object",
+        "properties": {
+          "structuredPlace": {
+            "$ref": "#/components/schemas/Place"
+          }
+        }
+      },
+      "Place": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "$ref": "#/components/schemas/ICAOCountry"
+          },
+          "zipcode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city",
+          "country"
+        ]
+      },
+      "EidData": {
+        "type": "object",
+        "properties": {
+          "pseudonym": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Card",
+              "SEEndorsed",
+              "SECertified"
+            ]
+          },
+          "familyNames": {
+            "type": "string"
+          },
+          "givenNames": {
+            "type": "string"
+          },
+          "placeOfBirth": {
+            "type": "string"
+          },
+          "nationality": {
+            "$ref": "#/components/schemas/ICAOCountry"
+          },
+          "placeOfResidence": {
+            "$ref": "#/components/schemas/GeneralPlace"
+          }
+        }
+      }
+    }
+  }
+}

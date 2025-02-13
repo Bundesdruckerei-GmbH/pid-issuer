@@ -1,0 +1,5 @@
+mvnw text eol=lf
+*.cmd text eol=crlf
+*.p12 binary
+*.sh text eol=lf
+

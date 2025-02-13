@@ -1,0 +1,19 @@
+@use 'src/styles';
+@use 'src/breakpoints';
+
+@mixin orientation() {
+  display: flex;
+  @extend .gap-m;
+  @include breakpoints.screen-smaller-720 {
+    flex-direction: column;
+  }
+}
+
+:host {
+  @include orientation;
+  justify-content: space-between;
+}
+
+.button-group {
+  @include orientation;
+}

@@ -1,0 +1,59 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "a",
+              "*"
+            ],
+            "values": [
+              "match"
+            ]
+          },
+          {
+            "path": [
+              "a",
+              "*"
+            ],
+            "values": [
+              "another match"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "a": [
+            "match",
+            "mismatch"
+          ]
+        },
+        "discloseable": [
+          [
+            "a"
+          ],
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": []
+}

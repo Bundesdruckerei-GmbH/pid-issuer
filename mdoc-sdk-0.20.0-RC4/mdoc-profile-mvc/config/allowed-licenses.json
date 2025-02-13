@@ -1,0 +1,31 @@
+{
+  "allowedLicenses": [
+    {
+      "moduleLicense": "Apache License, Version 2.0",
+    },
+    {
+      "moduleLicense": "MIT License"
+    },
+    {
+      "moduleLicense": "BSD3"
+    },
+    {
+      "moduleLicense": "CC0-1.0"
+    },
+    {
+      "moduleLicense": "CC0 1.0 Universal"
+    },
+    {
+      "moduleLicense": "Unlicense"
+    },
+    {
+      "moduleLicense": "Creative Commons Legal Code"
+    },
+    {
+      "moduleLicense": "Bouncy Castle Licence"
+    },
+    {
+      "moduleName": "de.bundesdruckerei.mdoc.kotlin:mdoc-core"
+    }
+  ]
+}

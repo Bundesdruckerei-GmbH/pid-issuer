@@ -1,0 +1,74 @@
+######################################
+#
+# THIS IS THE TEST APPLICATION YAML!!!!!!!!!!!!!!
+#
+#######################################
+
+app:
+  email-from-address: test@bdr.de
+  public-url: http://status-service.test
+  storage-directory: status-lists
+  cache-duration: PT24H
+  status-list-pools:
+    verified-email:
+      api-key: 366A9069-2965-4667-9AD2-5C51D71046D8
+      issuer: http://issuer.test
+      size: 128
+      bits: 1
+      precreation:
+        lists: 1
+        check-delay: 10s
+      prefetch:
+        threshold: 2
+        capacity: 4
+        on-underflow: delay
+      update-interval: 3s
+      list-lifetime: 15s
+      signer:
+        keystore: classpath:/keys/keystore.p12
+        password: test
+    subscriptions-email:
+      api-key: 366A9069-2965-4667-9AD2-5C51D71046D8
+      issuer: http://issuer.test
+      size: 128
+      bits: 4
+      precreation:
+        lists: 1
+        check-delay: 10s
+      prefetch:
+        threshold: 2
+        capacity: 4
+        on-underflow: delay
+      update-interval: 3s
+      list-lifetime: 15s
+      signer:
+        keystore: classpath:/keys/keystore.p12
+        password: test
+
+oid4vc:
+  issuer:
+    public-url: http://localhost:8080
+    walletAttestationIssuerList:
+      "[did:jwk:eyJrdHkiOiJFQyIsImNydiI6IlAtMjU2IiwieCI6Imxla20wV1lucC1qZW9RWXo5Uk1fOFUyV05MRWo5UjNfSkRnRE5VVldHbDQiLCJ5IjoiSXZhU0twU3JSQmhmQl96WlJGQzNWVC1FSWxEdG10X0IyWU1FUUh2aGtrZyIsImFsZyI6IkVTMjU2In0=]": "{\"kty\":\"EC\",\"crv\":\"P-256\",\"x\":\"lekm0WYnp-jeoQYz9RM_8U2WNLEj9R3_JDgDNUVWGl4\",\"y\":\"IvaSKpSrRBhfB_zZRFC3VT-EIlDtmt_B2YMEQHvhkkg\",\"alg\":\"ES256\"}"
+    signer:
+      pkcs12:
+        keystore: classpath:/keys/keystore.p12
+        password: test
+
+spring:
+  docker:
+    compose:
+      skip:
+        in-tests: true
+
+  mail:
+    host: ~
+    port: ~
+    username: ~
+    password: ~
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

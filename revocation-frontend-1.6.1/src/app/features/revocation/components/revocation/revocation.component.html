@@ -1,0 +1,15 @@
+<content-container>
+  <revocation-summary [issuanceCount]="issuanceCount()"/>
+
+  <navigation-container class="navigation">
+    <basic-button slot="start" buttonId="revoke-pids" iconUrl="icons/close.svg#close" (click)="handleRevocation()" [buttonDeactivated]="!revocable()">
+      <span>Revoke all valid PIDs</span>
+    </basic-button>
+    <basic-button slot="end" buttonId="refresh-pids" bordered iconUrl="icons/reload.svg#reload" (click)="refreshSummary()">
+      <span>Refresh</span>
+    </basic-button>
+    <basic-button slot="end" buttonId="logout" bordered iconUrl="icons/logout.svg#logout" (click)="logout()">
+      <span>Logout</span>
+    </basic-button>
+  </navigation-container>
+</content-container>

@@ -1,0 +1,1 @@
+Die Nutzungsrechte sind den vertraglichen Vereinbarungen zu entnehmen, die zwischen dem Copyright-Halter und dem Repository Owner sowie im Rahmen der Unterlizenzierung zwischen Repository Owner und SPRIND sowie dem Repository Owner und den SPRIND-Funken Teilnehmern geschlossen wurden.

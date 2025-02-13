@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  x-api-id: caaee673-3623-4cab-b2e6-cad264324704
+  x-audience: external-public
+  title: Status list service
+  description: public API for the status list service
+#  contact: # TODO
+#    name: BDr
+#    email: @bdr.de
+#    url: http://bundesdruckerei.de
+  version: 0.3.0
+paths:
+  /{id}:
+    get:
+      operationId: serveList
+      description: Returns a status list
+      responses:
+        default:
+          description: error occurred - see status code and error object for more information.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "200":
+          description: Status list response
+          content:
+            application/statuslist+jwt:
+              schema:
+                type: string
+                format: byte
+            application/statuslist+cwt:
+              schema:
+                type: string
+                format: byte
+            application/statuslist+cbor:
+              schema:
+                type: string
+                format: byte
+            application/statuslist+json:
+              schema:
+                $ref: "#/components/schemas/StatusList"
+    parameters:
+      - name: id
+        in: path
+        description: The id of the status list
+        required: true
+        schema:
+          type: string
+          format: UUID
+  /aggregation/{pool-id}:
+    get:
+      operationId: serveAggregation
+      description: Returns all available lists of a pool
+      responses:
+        default:
+          description: error occurred - see status code and error object for more information.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "200":
+          description: aggregation response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusLists"
+      parameters:
+        - name: pool-id
+          in: path
+          description: The id of the status list pool
+          required: true
+          schema:
+            type: string
+components:
+  schemas:
+    StatusList:
+      type: object
+      required:
+        - bits
+        - lst
+        - aggregation_uri
+      properties:
+        bits:
+          type: integer
+          format: int32
+          minimum: 1
+        lst:
+          type: string
+        aggregation_uri:
+          type: string
+          format: uri
+    StatusLists:
+      type: object
+      properties:
+        status_lists:
+          type: array
+          items:
+            type: string
+            format: uri
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          x-extensible-enum:
+            - UNAUTHORIZED
+            - NO_SUCH_POOL
+            - NO_SUCH_LIST
+            - VALUE_OUT_OF_RANGE
+            - INDEX_OUT_OF_BOUNDS
+            - RATE_LIMIT_REACHED
+            - UNSUPPORTED_MEDIA_TYPE
+        message:
+          type: string
+

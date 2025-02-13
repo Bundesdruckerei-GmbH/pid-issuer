@@ -1,0 +1,40 @@
+@use 'src/styles';
+@use 'src/breakpoints';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  background-color: styles.$white;
+  @extend .p-a-l;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    white-space: nowrap;
+    @include styles.ellipsis;
+  }
+
+  .close-button {
+    @include styles.icon-button;
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  @extend .gap-m;
+
+  @include breakpoints.screen-smaller-720 {
+    flex-direction: column;
+  }
+
+  basic-button {
+    flex-grow: 1;
+  }
+}

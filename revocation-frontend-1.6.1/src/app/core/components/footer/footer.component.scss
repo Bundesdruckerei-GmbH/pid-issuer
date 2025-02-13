@@ -1,0 +1,45 @@
+@use 'src/styles';
+@use '../../core-styles';
+@use 'src/breakpoints';
+
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @extend .gap-m;
+  padding: 9px 12px;
+  color: styles.$blue5;
+  background-color: styles.$blue90;
+}
+
+.copyright-section {
+  padding: 12px;
+}
+
+.menu-section {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+
+.navigation-button {
+  @include core-styles.navigation-button();
+
+  icon {
+    margin-right: 4px;
+  }
+}
+
+@include breakpoints.screen-smaller-720 {
+  .menu-section {
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 100%;
+  }
+
+  .copyright-section {
+    text-align: center;
+    flex-basis: 100%;
+  }
+}

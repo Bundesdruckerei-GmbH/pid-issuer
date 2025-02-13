@@ -1,0 +1,13 @@
+@use 'src/styles';
+
+li {
+  @extend .m-b-l;
+}
+
+h3 {
+  @extend .headline-5;
+
+  & + p {
+    @extend .m-b-m;
+  }
+}

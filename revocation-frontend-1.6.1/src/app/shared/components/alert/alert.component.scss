@@ -1,0 +1,85 @@
+@use "src/styles";
+
+:host {
+  display: block;
+}
+
+.alert-container {
+  border: 1px solid;
+  border-radius: 4px;
+  display: flex;
+  min-width: min-content;
+  @extend .gap-m;
+}
+
+@mixin border-left($color) {
+  border-left: 4px solid $color;
+}
+
+.alert {
+  &-error {
+    background-color: styles.$red5;
+    border-color: styles.$red30;
+
+    .alert-icon {
+      color: styles.$red60;
+    }
+
+    &.border-left {
+      @include border-left(styles.$red60);
+    }
+  }
+
+  &-warning {
+    background-color: styles.$orange5;
+    border-color: styles.$orange30;
+
+    .alert-icon {
+      color: styles.$orange60;
+    }
+
+    &.border-left {
+      @include border-left(styles.$orange60);
+    }
+  }
+
+  &-success {
+    background-color: styles.$green5;
+    border-color: styles.$green30;
+
+    .alert-icon {
+      color: styles.$green60;
+    }
+
+    &.border-left {
+      @include border-left(styles.$green60);
+    }
+  }
+
+  &-info {
+    background-color: styles.$blue5;
+    border-color: styles.$blue30;
+
+    .alert-icon {
+      color: styles.$blue60;
+    }
+
+    &.border-left {
+      @include border-left(styles.$blue60);
+    }
+  }
+}
+
+.title {
+  display: inline;
+  vertical-align: middle;
+}
+
+.description:empty {
+  display: none;
+}
+
+.close-button {
+  @include styles.icon-button;
+  @extend .m-l-auto;
+}

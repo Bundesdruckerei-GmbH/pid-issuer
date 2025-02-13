@@ -1,0 +1,79 @@
+<!--
+
+    Copyright 2024 Bundesdruckerei GmbH
+    For the license see the accompanying file LICENSE.MD.
+
+-->
+<!DOCTYPE html>
+<html th:replace="~{layout :: main(~{::title}, ~{::#content})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Credential format - SD-JWT</title>
+</head>
+<body>
+<main>
+    <div id="content" class="container mt-2" style="max-width: 40rem;">
+        <h1>Credential format - SD-JWT</h1>
+        <ul>
+            <li>The PID is issued in the format defined in the ARF Annex 6, with the changes from <a
+                    href="https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/pull/160/files" rel="noopener">ARF
+                PR 160</a> applied.
+            </li>
+            <li><a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/03" rel="noopener">SD-JWT VC Draft 03</a> is used:
+            </li>
+            <li>Use of a test root certificate used for credential signing. The root certificate is available on the <a
+                    href="/">main</a> page.
+                The
+                chain is written to the x5c header.
+            </li>
+            <li>The signing key is also made available at the jwt-vc-issuer well-known endpoint for web based key
+                resolution. Transfer of the jwt-vc-issuer metadata is secured by a browser validatable TLS certificate
+                used for displaying this technical details page as well.
+            </li>
+            <li><a href="https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-08.html" rel="noopener">SD-JWT Draft
+                08</a> is used:
+            </li>
+            <li> The compact serialization is used.</li>
+            <li> No recursive disclosures are used.</li>
+            <li> The leaf elements in the JSON tree are made selectively discloseable.</li>
+            <li> No array element disclosures are used. The nationalities array is made discloseable as a whole.</li>
+        </ul>
+        <h2>Sample PID</h2>
+        <p>Claims (data returned when using the fixed set of testdata):</p>
+        <code><pre>
+{
+    "vct": "https://demo.pid-issuer.bundesdruckerei.de/credentials/pid/1.0",
+    "iss": "https://demo.pid-issuer.bundesdruckerei.de/c",
+    "issuing_country": "DE",
+    "issuing_authority": "DE",
+    "given_name": "ERIKA",
+    "family_name": "MUSTERMANN",
+    "birth_family_name": "GABLER",
+    "birthdate": "1964-08-12",
+    "age_birth_year": 1964,
+    "age_in_years": 59,
+    "age_equal_or_over": {
+        "12": true,
+        "14": true,
+        "16": true,
+        "18": true,
+        "21": true,
+        "65": false
+    },
+    "place_of_birth": {
+        "locality": "BERLIN"
+    },
+    "address": {
+        "locality": "KÖLN",
+        "postal_code": "51147",
+        "street_address": "HEIDESTRAẞE 17"
+    },
+    "nationalities": ["DE"]
+}
+        </pre>
+        </code>
+        <p>Raw SD-JWT VC in compact serialization form:</p>
+        <textarea readonly="readonly" style="width:100%;height:10em" onclick="this.select()" id="sd-jwt-compact">eyJ4NWMiOlsiTUlJQ2REQ0NBaHVnQXdJQkFnSUJBakFLQmdncWhrak9QUVFEQWpDQmlERUxNQWtHQTFVRUJoTUNSRVV4RHpBTkJnTlZCQWNNQmtKbGNteHBiakVkTUJzR0ExVUVDZ3dVUW5WdVpHVnpaSEoxWTJ0bGNtVnBJRWR0WWtneEVUQVBCZ05WQkFzTUNGUWdRMU1nU1VSRk1UWXdOQVlEVlFRRERDMVRVRkpKVGtRZ1JuVnVhMlVnUlZWRVNTQlhZV3hzWlhRZ1VISnZkRzkwZVhCbElFbHpjM1ZwYm1jZ1EwRXdIaGNOTWpRd05UTXhNRGd4TXpFM1doY05NalV3TnpBMU1EZ3hNekUzV2pCc01Rc3dDUVlEVlFRR0V3SkVSVEVkTUJzR0ExVUVDZ3dVUW5WdVpHVnpaSEoxWTJ0bGNtVnBJRWR0WWtneENqQUlCZ05WQkFzTUFVa3hNakF3QmdOVkJBTU1LVk5RVWtsT1JDQkdkVzVyWlNCRlZVUkpJRmRoYkd4bGRDQlFjbTkwYjNSNWNHVWdTWE56ZFdWeU1Ga3dFd1lIS29aSXpqMENBUVlJS29aSXpqMERBUWNEUWdBRU9GQnE0WU1LZzR3NWZUaWZzeXR3QnVKZi83RTdWaFJQWGlObTUyUzNxMUVUSWdCZFh5REsza1Z4R3hnZUhQaXZMUDN1dU12UzZpREVjN3FNeG12ZHVLT0JrRENCalRBZEJnTlZIUTRFRmdRVWlQaENrTEVyRFhQTFcyL0owV1ZlZ2h5dyttSXdEQVlEVlIwVEFRSC9CQUl3QURBT0JnTlZIUThCQWY4RUJBTUNCNEF3TFFZRFZSMFJCQ1l3SklJaVpHVnRieTV3YVdRdGFYTnpkV1Z5TG1KMWJtUmxjMlJ5ZFdOclpYSmxhUzVrWlRBZkJnTlZIU01FR0RBV2dCVFVWaGpBaVRqb0RsaUVHTWwyWXIrcnU4V1F2akFLQmdncWhrak9QUVFEQWdOSEFEQkVBaUFiZjVUemtjUXpoZldvSW95aTFWTjdkOEk5QnNGS20xTVdsdVJwaDJieUdRSWdLWWtkck5mMnhYUGpWU2JqVy9VLzVTNXZBRUM1WHhjT2FudXNPQnJvQmJVPSIsIk1JSUNlVENDQWlDZ0F3SUJBZ0lVQjVFOVFWWnRtVVljRHRDaktCL0gzVlF2NzJnd0NnWUlLb1pJemowRUF3SXdnWWd4Q3pBSkJnTlZCQVlUQWtSRk1ROHdEUVlEVlFRSERBWkNaWEpzYVc0eEhUQWJCZ05WQkFvTUZFSjFibVJsYzJSeWRXTnJaWEpsYVNCSGJXSklNUkV3RHdZRFZRUUxEQWhVSUVOVElFbEVSVEUyTURRR0ExVUVBd3d0VTFCU1NVNUVJRVoxYm10bElFVlZSRWtnVjJGc2JHVjBJRkJ5YjNSdmRIbHdaU0JKYzNOMWFXNW5JRU5CTUI0WERUSTBNRFV6TVRBMk5EZ3dPVm9YRFRNME1EVXlPVEEyTkRnd09Wb3dnWWd4Q3pBSkJnTlZCQVlUQWtSRk1ROHdEUVlEVlFRSERBWkNaWEpzYVc0eEhUQWJCZ05WQkFvTUZFSjFibVJsYzJSeWRXTnJaWEpsYVNCSGJXSklNUkV3RHdZRFZRUUxEQWhVSUVOVElFbEVSVEUyTURRR0ExVUVBd3d0VTFCU1NVNUVJRVoxYm10bElFVlZSRWtnVjJGc2JHVjBJRkJ5YjNSdmRIbHdaU0JKYzNOMWFXNW5JRU5CTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFWUd6ZHdGRG5jNytLbjVpYkF2Q09NOGtlNzdWUXhxZk1jd1pMOElhSUErV0NST2NDZm1ZL2dpSDkycU1ydTVwL2t5T2l2RTBSQy9JYmRNT052RG9VeWFObU1HUXdIUVlEVlIwT0JCWUVGTlJXR01DSk9PZ09XSVFZeVhaaXY2dTd4WkMrTUI4R0ExVWRJd1FZTUJhQUZOUldHTUNKT09nT1dJUVl5WFppdjZ1N3haQytNQklHQTFVZEV3RUIvd1FJTUFZQkFmOENBUUF3RGdZRFZSMFBBUUgvQkFRREFnR0dNQW9HQ0NxR1NNNDlCQU1DQTBjQU1FUUNJR0VtN3drWktIdC9hdGI0TWRGblhXNnlybndNVVQydTEzNmdkdGwxMFk2aEFpQnVURnF2Vll0aDFyYnh6Q1AweFdaSG1RSzlrVnl4bjhHUGZYMjdFSXp6c3c9PSJdLCJraWQiOiJNSUdVTUlHT3BJR0xNSUdJTVFzd0NRWURWUVFHRXdKRVJURVBNQTBHQTFVRUJ3d0dRbVZ5YkdsdU1SMHdHd1lEVlFRS0RCUkNkVzVrWlhOa2NuVmphMlZ5WldrZ1IyMWlTREVSTUE4R0ExVUVDd3dJVkNCRFV5QkpSRVV4TmpBMEJnTlZCQU1NTFZOUVVrbE9SQ0JHZFc1clpTQkZWVVJKSUZkaGJHeGxkQ0JRY205MGIzUjVjR1VnU1hOemRXbHVaeUJEUVFJQkFnPT0iLCJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJwbGFjZV9vZl9iaXJ0aCI6eyJfc2QiOlsiZVNReDlVNFI4S2dKUnJISWZOYTdPeUhTR2I3WTh3bFNaWkc0MXVwWFN2ayJdfSwiX3NkIjpbIkdxZVRITW1mWFNyLVRpWHNscGVidTd2ay1aTzBnYkJ3N0ktbWtPR2k4UlEiLCIzMlpvemdIRl9kVFhRTVZMRWl6d0ZzelJ5b0IxVks5bHNnakFHaHlUdnBnIiwib2htY1pCTE1JUFRhOWN2cHVNdXRzcWRZdVFhaTRiR2RibmFJZDRSeDBQayIsIndQQ0lfbzQtbFhWVzkySkVCQkJPazUwUWVISGQtYWl4WGJzOWJ5dGhueWMiLCJqaTJ3VXd6RWJCWmFGOHRtLWRLaUZSVTZpbVp0bTU1ZGFOZkVaYW9xWTBzIiwidk5CS2RKNUVpakFuZWwxaVM4ZGFLS0J5TWd6d3JSelBzTU9vUEZTWkJQQSIsInlfeG5PUGVNU2M5Y2FjZ25VanBYYkFFeW9OZXVIZVpDYkdJdi1WYXU1YWsiXSwiYWRkcmVzcyI6eyJfc2QiOlsiWjhZbDBCalFaZGZ3LWZtbzRCZGR0SzVxMEM3Vk9OLXJ5ZjBUbEZwVUtZayIsIktWbUtzNnBCR0VsNHZTTTJrTF9RZ1FFTEdqLU5mR084blJGbkx0NWdlRlkiLCJabHJibS1BMHdMTURSVWQ0Z1o5SDRSUWJaR3BUMVpRNG5ZSGlxdFI2WU9NIl19LCJpc3N1aW5nX2NvdW50cnkiOiJERSIsInZjdCI6Imh0dHBzOi8vZGVtby5waWQtaXNzdWVyLmJ1bmRlc2RydWNrZXJlaS5kZS9jcmVkZW50aWFscy9waWQvMS4wIiwiaXNzdWluZ19hdXRob3JpdHkiOiJERSIsIl9zZF9hbGciOiJzaGEtMjU2IiwiaXNzIjoiaHR0cHM6Ly9kZW1vLnBpZC1pc3N1ZXIuYnVuZGVzZHJ1Y2tlcmVpLmRlL2MiLCJjbmYiOnsiandrIjp7Imt0eSI6IkVDIiwiY3J2IjoiUC0yNTYiLCJ4IjoiVTZYOFBvcWl6WjMtUHJOb3dSVVFoN24tdHdtOVpvMXdVOHRYOTFQRW1fOCIsInkiOiJ0ZmNkcWdLclVVMjJHZUVXRTc0OUxhOGRIWUVMYmZKR0NZUV9hUVIzcE9zIn19LCJleHAiOjE3MTg3MDc4MDQsImlhdCI6MTcxNzQ5ODIwNCwiYWdlX2VxdWFsX29yX292ZXIiOnsiX3NkIjpbIkw5U3dlLThwdTFnWWVLSW11Q2VDVEpxNjA4NDN5aVJ5VXVGWHRpR1JvWXMiLCJVYVZ5aU5KVnN4VHV0eUlUb2tZdWxQMnZyNVpocTNFRVExY2tnWm00dEdRIiwiWEZ5ZWZDT29kcUl2STJCb3VGX2FBUFUwX21kOVotQjdrUG9pd3g1N1hGTSIsImxReWdoWFpyVjR2dFE5S3BVWko2cHpHSDlWVEhFQjkwOTNWN2NCZjJIRDgiLCJfY3NWNzc4R1J0R3V2UHV2UndWLXVIWEJ6SW9RM08wRjRtUHVQdWVYalhNIiwiem1ibXFTaDAxOU1nMXdBVml1YnJpbE1JbTRSemxNaG5zTjVaLWRCRUh5ayJdfX0.4gaCIRfiG5X1o4EEs95EHroq1UwX3Zgi-MDc1wq15oCOxFkcS5xAg9rKsMgQMDd_6ZVGFiA9JGFe0t8VqZGTOA~WyJKNm55NUdXVzlJZHNXQURKblNEQnN3IiwiZmFtaWx5X25hbWUiLCJNVVNURVJNQU5OIl0~WyJqcnVqMGV4RjdOVElGWEptOUJWQ1VnIiwiZ2l2ZW5fbmFtZSIsIkVSSUtBIl0~WyJRRkJBbnFIaUo3Y1A1MHBDak1IdUFBIiwiYmlydGhkYXRlIiwiMTk2NC0wOC0xMiJd~WyI1MmQxQVNmbmE3N1JERXE3bnR4ODFnIiwiYWdlX2JpcnRoX3llYXIiLDE5NjRd~WyJiZmRSdEl5NV9kRWloc3BRTmwzNDNBIiwiYWdlX2luX3llYXJzIiw1OV0~WyJXbG43VmxHTXhaXzRlSkc0dmNkYTRnIiwiYmlydGhfZmFtaWx5X25hbWUiLCJHQUJMRVIiXQ~WyJBUFdMWlRVOHRzS3NNWXBzazhtclVnIiwibmF0aW9uYWxpdGllcyIsWyJERSJdXQ~WyJOaE9LaFRNdEhxU2pzdmV1ekFLbWpBIiwiMTIiLHRydWVd~WyJFTlFGWURlTEV0bEo3cDhzdEFMSDJRIiwiMTQiLHRydWVd~WyJtNE5QUHFxY0VxVm4tWVNyQkFNMHVBIiwiMTYiLHRydWVd~WyJNT1R4eG1kUk05alhoX3dHbzZTQXpRIiwiMTgiLHRydWVd~WyJNZ3oySzRqTzFJVlZCU015RTNoZ1JRIiwiMjEiLHRydWVd~WyJNN0tjb0JIMjZPVzhPZUFicmZMakx3IiwiNjUiLGZhbHNlXQ~WyJRaW5JUERxdnJFem5Talp1MkZqOUl3IiwibG9jYWxpdHkiLCJCRVJMSU4iXQ~WyJxVFg0Si1URFBqTHh3TElhU3NZLWlBIiwibG9jYWxpdHkiLCJLw5ZMTiJd~WyJFSlNfdFlyVGI4VWVYWXJGY3pkNUd3IiwicG9zdGFsX2NvZGUiLCI1MTE0NyJd~WyJRZFhXN3BaWkVpV1ZLbXFZOGg1d0VBIiwic3RyZWV0X2FkZHJlc3MiLCJIRUlERVNUUkHhup5FIDE3Il0~</textarea>
+    </div>
+</main>
+</body>
+</html>

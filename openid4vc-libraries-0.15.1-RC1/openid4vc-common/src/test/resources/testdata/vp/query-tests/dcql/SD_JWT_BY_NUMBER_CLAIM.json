@@ -1,0 +1,94 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "correct",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "claim"
+            ],
+            "values": [
+              4.33
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": 4.33
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-string",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": "incorrect"
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-boolean",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": false
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-number",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": 7.33
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-null",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": null
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect-missing-claim",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {},
+        "discloseable": []
+      }
+    }
+  ],
+  "expected": [
+    {
+      "correct": {
+        "id": "correct",
+        "disclosed": []
+      }
+    }
+  ]
+}

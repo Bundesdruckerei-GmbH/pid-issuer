@@ -1,0 +1,10 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/statuslistdb
+    username: status_list_app
+    password: status_list_app
+    driverClassName: org.postgresql.Driver
+app:
+  storage-type: postgres

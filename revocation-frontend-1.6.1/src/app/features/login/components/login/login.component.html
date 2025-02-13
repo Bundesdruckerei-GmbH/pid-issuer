@@ -1,0 +1,14 @@
+<content-container>
+  <p class="text-m">
+    <span>This app allows for the revocation of PIDs issued with the prototypical PID Issuer available under </span>
+    <a id="pid-issuer-link" [href]="pidIssuerUrl" target="_blank" rel="noopener noreferrer">{{ pidIssuerUrl }}</a>
+    <span>.</span>
+  </p>
+  <p class="text-m">In order to revoke PIDs, please identify with the same (test) ID card (eID, eAT, EU Citizen) the credential were issued with.</p>
+
+  <navigation-container class="navigation">
+    <basic-button slot="end" buttonId="identify-with-eid" (click)="login()" iconUrl="icons/close.svg#close">
+      <span>Identify with AusweisApp</span>
+    </basic-button>
+  </navigation-container>
+</content-container>

@@ -1,0 +1,32 @@
+{
+  "$id": "https://pidi.bdr.de/status.schema.json",
+  "$schema": "http://json-schema.org/schema#",
+  "title": "IssuerStatusInformation",
+  "version": "0.1.0",
+  "description": "Message for Issuer Status Information",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pseudonym": {
+      "type": "string",
+      "format": "byte",
+      "description": "base64 encoded id"
+    },
+    "listID": {
+      "type": "string"
+    },
+    "index": {
+      "type": "integer"
+    },
+    "expirationTime": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "pseudonym",
+    "listID",
+    "index",
+    "expirationTime"
+  ]
+}

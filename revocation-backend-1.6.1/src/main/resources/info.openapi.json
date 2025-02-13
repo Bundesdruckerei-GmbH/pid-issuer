@@ -1,0 +1,701 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Revocation Service eID API",
+    "description": "Provides information on the derived Smart eIDs associated with the authenticated eID.",
+    "version": "2.0.2-SNAPSHOT"
+  },
+  "servers": [],
+  "tags": [
+    {
+      "name": "TR-03124",
+      "description": "authentication with eID, based on SAML with HTTP redirect binding",
+      "externalDocs": {
+        "description": "BSI: Technical Guideline TR-03124-1, eID-Client, Part 1: Specifications",
+        "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Technische-Richtlinien/TR-nach-Thema-sortiert/tr03124/TR-03124_node.html"
+      }
+    }
+  ],
+  "paths": {
+    "/auth-url": {
+      "summary": "request from Info App, TR-03124",
+      "get": {
+        "summary": "initiates the authentication",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "request a session ID and the URL that is sent via a parameter to the eID-Client",
+        "operationId": "getAuthenticationUrl",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "lang",
+            "description": "the language for the redirect url",
+            "schema": {
+              "description": "subset of iso 639-1 language codes",
+              "type": "string",
+              "pattern": "en|de",
+              "default": "de"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success, created the unique URL",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "maxLength": 400,
+                  "description": "URL-encoded",
+                  "example": "http%3A%2F%2Fsmarteid.personalausweisportal.de%2Fapi%2Finfo%2Fv1%2FtcToken%3Fauth%3Dabcdefghij123456%3D%3D"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tcToken": {
+      "summary": "request from the eID-Client, TR-03124",
+      "get": {
+        "summary": "requests the TC Token for the Trusted Channel",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "we redirect to the eID-Server with a SAML Request as URL parameter",
+        "operationId": "getTcTokenRedirectUrl",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "auth",
+            "description": "the authentication id as returned from _getAuthenticationUrl_",
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "success, redirect to the eID-Server (that will generate the TC Token)",
+            "headers": {
+              "Location": {
+                "required": true,
+                "description": "contains the SAMLRequest (long value) and Signature as URL parameters",
+                "schema": {
+                  "type": "string",
+                  "maxLength": 5000
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "failure, TC Token with error code that redirects the eID-Client to an error page",
+            "content": {
+              "text/xml": {
+                "example": "<TCTokenType> <ServerAddress></ServerAddress> <SessionIdentifier></SessionIdentifier> <RefreshAddress></RefreshAddress> <CommunicationErrorAddress>https://personalausweisportal.de/too_bad.html</CommunicationErrorAddress> <Binding></Binding> </TCTokenType>"
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/saml-consumer": {
+      "summary": "response from the eID-Server, TR-03124",
+      "get": {
+        "summary": "consumes the SAML Response from the eID-Server",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "the eID-Server sends the response and we redirect the eID-Client to continue in the authentication flow, TR-03124",
+        "operationId": "getSamlConsumer",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "SAMLResponse",
+            "description": "the SAML Response (long value)",
+            "schema": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "RelayState",
+            "description": "provides additional information",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "SigAlg",
+            "description": "signature algorithm",
+            "schema": {
+              "type": "string",
+              "maxLength": 80,
+              "example": "http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "Signature",
+            "description": "signature",
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "success or failure, redirect to the next step or to an error page",
+            "headers": {
+              "Location": {
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth-loggedin": {
+      "summary": "request from Info App, TR-03124",
+      "get": {
+        "summary": "finishes the authentication and renews the session",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "binds the requests from the eID-Client to the session ID with the Info APP; the session ID and perhaps the session duration change",
+        "operationId": "getLoggedIn",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ref",
+            "description": "relates this request to the call on the SAML consumer URL",
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            },
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "X-Session-ID",
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            },
+            "required": false,
+            "description": "Session ID, base64 URL encoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoggedInResponse"
+                },
+                "example": {
+                  "sessionId": "verySecret",
+                  "duration": 600
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "the security parameters do not belong to a valid session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth-refresh": {
+      "summary": "request from Info App, TR-03124",
+      "get": {
+        "summary": "refreshes the session and extends the session timeout",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "refreshes the session timeout for an authenticated session until the maximum session timeout is reached. Returns the remaining session duration in seconds if the amount is greater than 0. In case the session is already expired, status 401 will be returned.",
+        "operationId": "getSessionRefresh",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Session-ID",
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            },
+            "required": false,
+            "description": "Session ID, base64 URL encoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoggedInResponse"
+                },
+                "example": {
+                  "sessionId": "verySecret",
+                  "duration": 600
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "the security parameters do not belong to a valid session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth-drop": {
+      "summary": "request from Info App, TR-03124",
+      "get": {
+        "summary": "terminates the authenticated session",
+        "tags": [
+          "TR-03124"
+        ],
+        "description": "the Info Service should terminate its Authentication session",
+        "operationId": "getAuthenticationTerminated",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Session-ID",
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            },
+            "required": false,
+            "description": "Session ID, base64 URL encoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success, the authentication session is no longer valid",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "example": "logged out"
+              }
+            }
+          },
+          "400": {
+            "description": "the data passed in the parameters is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the server encountered an unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 500,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logged-in": {
+      "get": {
+        "description": "Reflector API for the frontend logged in url",
+        "operationId": "getReflectorLoggedIn",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/IdParameter"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ResultMajor",
+            "description": "automatically appended by the eID-Client",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "ResultMinor",
+            "description": "automatically appended by the eID-Client",
+            "schema": {
+              "type": "string",
+              "maxLength": 400
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "Redirect to the frontend url"
+          }
+        }
+      }
+    },
+    "/mpa-error": {
+      "get": {
+        "description": "Reflector API for the frontend error url",
+        "operationId": "getReflectorMpaError",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "the error code",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "ResultMajor",
+            "description": "automatically appended by the eID-Client",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "ResultMinor",
+            "description": "automatically appended by the eID-Client",
+            "schema": {
+              "type": "string",
+              "maxLength": 400
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "Redirect to the frontend url"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoggedInResponse": {
+        "description": "The session data after login.",
+        "type": "object",
+        "required": [
+          "sessionId",
+          "duration"
+        ],
+        "properties": {
+          "sessionId": {
+            "$ref": "#/components/schemas/IdParameter"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1800,
+            "description": "duration of the authenticated session in seconds"
+          }
+        }
+      },
+      "IdParameter": {
+        "type": "string",
+        "maxLength": 80,
+        "pattern": "[a-zA-Z0-9_-]+(?:=|%3D|%3d){0,2}$"
+      },
+      "PagedEntries": {
+        "description": "a page of entries for the requested eID pseudonym",
+        "type": "object",
+        "required": [
+          "pseudonym",
+          "pageSize",
+          "startIndex",
+          "totalCount",
+          "otherDevices",
+          "connectedDevices"
+        ],
+        "properties": {
+          "pseudonym": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{43}=$",
+            "description": "pseudonym of the eID used for login, 32 bytes of binary data, base64 URL encoded"
+          },
+          "loggedInWithCard": {
+            "type": "boolean",
+            "description": "true: the user logged in with a physical card, false when they used a Smart-eID"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "the number of entries returned in a result page"
+          },
+          "startIndex": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "the start of the result page"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "the total number of entries in the registry for the pseudonym, excluding the ones in connectedDevices"
+          },
+          "otherDevices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entry"
+            },
+            "description": "the devices associated with the pseudonym in the specified page, excluding the ones in connectedDevices"
+          },
+          "connectedDevices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entry"
+            },
+            "description": "the device used for authentication; only in corner cases more than one entry"
+          }
+        }
+      },
+      "Entry": {
+        "description": "an entry in the registry",
+        "type": "object",
+        "required": [
+          "personalizedAt",
+          "validUntil",
+          "revocationPassword"
+        ],
+        "properties": {
+          "manufacturer": {
+            "type": "string",
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9 +&/_'.,-]+$",
+            "description": "designates the manufacturer of the device (will be shown to the user and be present in reports)"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 44,
+            "pattern": "^[A-Za-z0-9 +&/()_.-]+$",
+            "description": "designates the model of the device (will be shown to the user and be present in reports)"
+          },
+          "personalizedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "the time when the personalization took place, in UTC"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date",
+            "description": "the last day of the Smart eID's validity"
+          },
+          "revocationPassword": {
+            "type": "string",
+            "maxLength": 255,
+            "pattern": "^[A-Za-zÄÖÜẞäöüß0-9 -]+$",
+            "description": "revocation password (will be shown to the user)"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "the response to be sent after an error occurred",
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "error code identifying the error cause"
+          },
+          "message": {
+            "type": "string",
+            "description": "short error description"
+          }
+        }
+      }
+    }
+  },
+  "security": []
+}
