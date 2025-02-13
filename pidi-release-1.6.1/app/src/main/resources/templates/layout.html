@@ -1,0 +1,136 @@
+<!--
+
+    Copyright 2024 Bundesdruckerei GmbH
+    For the license see the accompanying file LICENSE.MD.
+
+-->
+<!DOCTYPE html>
+<html th:fragment="main (title, content)" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title th:replace="${title}">Credential Issuer for verified E-Mails</title>
+    <link rel="icon" th:href="@{favicon.png}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <style>
+        .burgerbar {
+            width: 15px;
+            height: 2px;
+            border-top: 2px solid #000;
+            margin-top: 2px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+<!--Main Navigation-->
+<header>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button
+                    data-mdb-collapse-init
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <span class="burgerbar"></span>
+                <span class="burgerbar"></span>
+                <span class="burgerbar"></span>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left navbar -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./">Home</a>
+                    </li>
+                    <!-- Navbar dropdown flow variant -->
+                    <li class="nav-item dropdown">
+                        <button
+                                data-mdb-dropdown-init
+                                class="nav-link dropdown-toggle"
+                                id="navbarDropdownFlowVariant"
+                                aria-expanded="false"
+                        >
+                            Flow variant
+                        </button>
+                        <!-- Dropdown menu flow variant -->
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownFlowVariant">
+                            <li><a class="dropdown-item" href="./variant-b">Variant B</a></li>
+                            <li><a class="dropdown-item" href="./variant-b1">Variant B'</a></li>
+                            <li><a class="dropdown-item" href="./variant-c">Variant C</a></li>
+                            <li><a class="dropdown-item" href="./variant-c1">Variant C'</a></li>
+                            <li><a class="dropdown-item" href="./variant-c2">Variant C''</a></li>
+                        </ul>
+                    </li>
+                    <!-- Navbar dropdown credential format-->
+                    <li class="nav-item dropdown">
+                        <button
+                                data-mdb-dropdown-init
+                                class="nav-link dropdown-toggle"
+                                id="navbarDropdownCredentialFormat"
+                                aria-expanded="false"
+                        >
+                            Credential format
+                        </button>
+                        <!-- Dropdown menu credential format -->
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownCredentialFormat">
+                            <li><a class="dropdown-item" href="./sdjwt">SD-JWT</a></li>
+                            <li><a class="dropdown-item" href="./msomdoc">MSO-MDOC</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./releases">Release notes</a>
+                    </li>
+                    <li class="nav-item"></li>
+                        <a class="nav-link" href="./docs/manual.html" rel="noopener" target="_blank">Manual</a>
+                    </li>
+                </ul>
+                <!-- Right navbar -->
+                <span class="navbar-text">
+                  Version <span th:text="${version}">-</span>
+                </span>
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main style="padding-top:2rem;padding-bottom:2rem;">
+    <div th:replace="${content}" class="container mt-2" style="max-width: 30rem;"></div>
+</main>
+<!--Main layout-->
+
+<!--Footer-->
+<footer>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        <a class="me-4" th:href="${@environment.getProperty('external-links.legal-notice')}" rel="noopener">Legal notice</a>
+        <a class="me-4" th:href="${@environment.getProperty('external-links.privacy-terms')}" rel="noopener">Privacy terms</a>
+        <a class="me-4" href="./licence">Licence information</a>
+        © 2024 |
+        <a class="text-body" href="https://www.bundesdruckerei.de/en" rel="noopener">Bundesdruckerei GmbH</a>
+    </div>
+</footer>
+<script th:src="@{js/mdb.umd.min.js}"></script>
+<script type="text/javascript"></script>
+</body>
+</html>

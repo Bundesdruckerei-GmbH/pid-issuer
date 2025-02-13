@@ -1,0 +1,49 @@
+logging:
+  level:
+    org.zalando.logbook: ${HTTP_LOGGING:off}
+
+logbook:
+  predicate:
+    include:
+      - path: /**
+        methods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+  filter.enabled: true
+  format.style: http
+  strategy: body-only-if-status-at-least
+  minimum-status: 400
+  obfuscate:
+    headers:
+      - Authorization
+      - X-Api-Key
+
+server:
+  port: 8085
+  error:
+    whitelabel:
+      enabled: false
+
+management:
+  server:
+    port: 9092
+  endpoint:
+    health:
+      enabled: true
+      probes:
+        enabled: true
+    prometheus:
+      enabled: true
+    loggers:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: 'health, prometheus, loggers'
+  prometheus:
+    metrics:
+      export:
+        enabled: true

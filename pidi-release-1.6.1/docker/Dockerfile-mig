@@ -1,0 +1,9 @@
+FROM liquibase/liquibase:4.30.0@sha256:bbb7930d977f47b1918e4dc5a0112122322095dc51acb4356743890fa869d8f1
+COPY --chown=liquibase:liquibase app/src/main/resources/db /liquibase/db
+COPY --chown=liquibase:liquibase docker/runDbMigration.sh /liquibase/
+COPY --chown=liquibase:liquibase docker/bdr-ca /opt/bdr-ca/
+USER root
+RUN chmod +x /liquibase/runDbMigration.sh
+USER liquibase
+ENTRYPOINT ["/liquibase/runDbMigration.sh"]
+

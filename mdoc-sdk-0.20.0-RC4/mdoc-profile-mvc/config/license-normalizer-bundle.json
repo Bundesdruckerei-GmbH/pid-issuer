@@ -1,0 +1,8 @@
+{
+  "bundles" : [
+    { "bundleName" : "CC0-1.0", "licenseName" : "CC0 1.0 Universal", "licenseUrl" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode" }
+  ],
+  "transformationRules" : [
+    { "bundleName" : "MIT", "licenseUrlPattern" : ".*(www\\.)?opensource\\.org/licenses/(MIT|mit)(-license)?(\\.php)?" }
+  ]
+}

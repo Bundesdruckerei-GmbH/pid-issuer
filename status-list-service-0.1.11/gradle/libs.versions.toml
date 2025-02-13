@@ -1,0 +1,61 @@
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.md
+
+[versions]
+logbook-spring = "3.10.0"
+logstash-logback-encoder = "8.0"
+kotlin = "2.1.10"
+spring-boot = "3.3.6"
+spring-dependency-management = "1.1.7"
+status-list = "0.15.1-RC1"
+mockk = "1.13.16"
+assertk = "0.28.1"
+jsonassert = "1.5.3"
+springmockk = "4.0.2"
+junit = "5.11.4"
+caffeine = "3.2.0"
+bc = "1.80"
+nimbus-jwt = "9.40"
+kotlin-serialization = "1.8.0"
+lettuce = "6.5.3.RELEASE"
+spotless = "7.0.2"
+openapi = "7.11.0"
+
+[libraries]
+bcpkix = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bc" }
+caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
+
+spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-starter-logbook = { group = "org.zalando", name = "logbook-spring-boot-starter", version.ref = "logbook-spring" }
+
+logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
+
+spring-data-redis = { group = "org.springframework.data", name = "spring-data-redis", version.ref = "spring-boot" }
+
+lettuce = { group = "io.lettuce", name = "lettuce-core", version.ref = "lettuce" }
+
+status-list = { group = "de.bdr.openid4vc", name = "status-list", version.ref = "status-list" }
+
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+open-api-generator = { group = 'org.openapitools', name = 'openapi-generator-gradle-plugin', version.ref = "openapi" }
+jakarta = { group = 'jakarta.validation', name = 'jakarta.validation-api', version = '3.1.1' }
+
+test-assertk = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertk" }
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test-jsonassert = { group = "org.skyscreamer", name = "jsonassert", version.ref = "jsonassert" }
+test-springmockk = { group = "com.ninja-squad", name = "springmockk", version.ref = "springmockk" }
+test-junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+test-junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+open-api-generator = { id = "org.openapi.generator", version.ref = "openapi"}
+
+[bundles]
+test = ["spring-boot-starter-test", "test-assertk", "test-mockk", "test-jsonassert", "test-springmockk", "test-junit", "test-junit-jupiter-params", "kotlin-serialization"]

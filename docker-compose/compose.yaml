@@ -1,0 +1,117 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+services:
+  pid-issuer-db:
+    image: postgres:15.10-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=pididb
+      - POSTGRES_USER=pidi_issuer_mig
+      - POSTGRES_PASSWORD=pidi_issuer_mig
+      - APP_USER=pidi_issuer_app
+      - APP_USER_PASSWORD=pidi_issuer_app
+    volumes:
+      - postgres-pidi:/var/lib/postgresql/data
+      - ../pidi-release-1.6.1/docker-compose/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d pididb -U pidi_issuer_mig"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  pid-issuer-mig:
+    image: liquibase/liquibase:4.30.0@sha256:bbb7930d977f47b1918e4dc5a0112122322095dc51acb4356743890fa869d8f1
+    depends_on:
+      - pid-issuer-db
+    environment:
+      - LIQUIBASE_COMMAND_URL=jdbc:postgresql://pid-issuer-db:5432/pididb?escapeSyntaxCallMode=callIfNoReturn
+      - RUN_LOCAL=true
+      - LIQUIBASE_COMMAND_USERNAME=pidi_issuer_mig
+      - LIQUIBASE_COMMAND_PASSWORD=pidi_issuer_mig
+      - LIQUIBASE_COMMAND_CONTEXT_FILTER=pidi
+    volumes:
+        - ../pidi-release-1.6.1/app/src/main/resources/db:/liquibase/db
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "/liquibase/docker-entrypoint.sh liquibase --changeLogFile=db/changelog/db.changelog-master.yaml --logLevel=info update && echo done > /tmp/done.txt && sleep infinity"]
+    healthcheck:
+      test: ["CMD-SHELL", "cat /tmp/done.txt"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  pid-issuer-revocation-service-rabbit:
+    image: rabbitmq:3.13.7-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 3s
+      timeout: 1s
+      retries: 20
+
+  revocation-postgres:
+    image: postgres:15.10-alpine
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_DB=revocationdb
+      - POSTGRES_USER=revocation_mig
+      - POSTGRES_PASSWORD=revocation_mig
+      - APP_USER=revocation_app
+      - APP_USER_PASSWORD=revocation_app
+    volumes:
+      - postgres-rs:/var/lib/postgresql/data
+      - ../revocation-backend-1.6.1/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d revocationdb -U revocation_mig"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  revocation-flyway:
+    image: flyway/flyway:10.22-alpine
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "flyway -connectRetries=60 migrate && echo done > /tmp/done.txt && sleep infinity"]
+    depends_on:
+      - revocation-postgres
+    environment:
+      - FLYWAY_PLACEHOLDERS_APP_USER=revocation_app
+      - FLYWAY_URL=jdbc:postgresql://revocation-postgres/revocationdb
+      - FLYWAY_USER=revocation_mig
+      - FLYWAY_PASSWORD=revocation_mig
+      - FLYWAY_LOCATIONS=filesystem:/flyway/migrations
+    volumes:
+      - ../revocation-backend-1.6.1/db/migrations:/flyway/migrations
+    healthcheck:
+      test: ["CMD-SHELL", "cat /tmp/done.txt"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  # Redis
+  status-list-redis:
+    image: redis:7.4.1
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "echo appendonly yes > /tmp/redis.conf && echo appendfsync always >> /tmp/redis.conf && redis-server /tmp/redis.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+volumes:
+  postgres-pidi:
+  postgres-rs:
+  rabbitmq:
+  redis:

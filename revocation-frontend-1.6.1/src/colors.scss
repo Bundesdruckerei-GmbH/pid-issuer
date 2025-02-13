@@ -1,0 +1,70 @@
+@use 'sass:color';
+
+$black: #000000;
+
+$blue100: #000029;
+$blue90: #030045;
+$blue80: #001d6c;
+$blue70: #1033a2;
+$blue60: #0043ce;
+$blue50: #296ef5;
+$blue40: #4589ff;
+$blue30: #78a9ff;
+$blue20: #a6c8ff;
+$blue10: #d0e2ff;
+$blue5: #eef4fd;
+
+$white: #ffffff;
+
+$grey100: #2d2d2d;
+$grey90: #3c3c3c;
+$grey80: #575757;
+$grey70: #6f6f6f;
+$grey60: #878787;
+$grey50: #a8a8a8;
+$grey40: #c6c6c6;
+$grey30: #dadada;
+$grey20: #ededed;
+$grey10: #f6f6f6;
+$grey5: #fbfbfb;
+
+$red100: #420408;
+$red90: #520408;
+$red80: #750e13;
+$red70: #a2191f;
+$red60: #ca1e28;
+$red50: #e60037;
+$red40: #fa4d56;
+$red30: #f08a8c;
+$red20: #f6b9ba;
+$red10: #f9d0d1;
+$red5: #fff2f2;
+
+$green100: #00442C;
+$green90: #00543C;
+$green80: #007E5A;
+$green70: #00A073;
+$green60: #00AF7D;
+$green50: #00C387;
+$green40: #00D296;
+$green30: #33DBAB;
+$green20: #65E0B9;
+$green10: #8EDEC6;
+$green5: #E4F6F1;
+
+$orange100: #5C2B0E;
+$orange90: #8B3913;
+$orange80: #CA3E07;
+$orange70: #E84E0F;
+$orange60: #F08200;
+$orange50: #FF8C00;
+$orange40: #F7A746;
+$orange30: #F0C891;
+$orange20: #F4D7AF;
+$orange10: #F8E4CA;
+$orange5: #FCF3E8;
+
+$menu-overlay: rgba(0, 0, 41, 0.7);
+
+$shadow-color-1: color.change($blue100, $alpha: 0.15);
+$shadow-color-2: color.change($blue100, $alpha: 0.12);

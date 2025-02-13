@@ -1,0 +1,80 @@
+### Request a reference from the 'verified-email' pool
+< {%
+    client.global.clearAll()
+    client.global.set("apiKey", "366A9069-2965-4667-9AD2-5C51D71046D8")
+    request.variables.set("apiKey", client.global.get("apiKey"))
+%}
+POST http://localhost:8085/pools/verified-email/new-references
+X-API-KEY: {{apiKey}}
+
+> {%
+    const firstIndex = jsonPath(response.body, "$.references[0].index");
+    const listUri = jsonPath(response.body, "$.references[0].uri")
+    console.log(firstIndex, listUri)
+
+    client.global.set("index", firstIndex)
+    client.global.set("listUri", listUri)
+%}
+
+### Request multiple references from the 'verified-email' pool
+< {%
+    request.variables.set("apiKey", client.global.get("apiKey"))
+%}
+POST http://localhost:8085/pools/verified-email/new-references?amount=10
+X-Api-Key: {{apiKey}}
+
+> {%
+    const firstIndex = jsonPath(response.body, "$.references[0].index");
+    const listUri = jsonPath(response.body, "$.references[0].uri")
+    console.log(firstIndex, listUri)
+
+    client.global.set("index", firstIndex)
+    client.global.set("listUri", listUri)
+%}
+
+### Set a status
+< {%
+    request.variables.set("apiKey", client.global.get("apiKey"))
+    request.variables.set("index", client.global.get("index"))
+    request.variables.set("listUri", client.global.get("listUri"))
+%}
+PATCH http://localhost:8085/status-lists/update
+X-Api-Key: {{apiKey}}
+Content-Type: application/json
+
+{
+  "index": {{index}},
+  "uri": "{{listUri}}",
+  "value": 1
+}
+
+### Request a status list in JSON format
+< {%
+    request.variables.set("listUri", client.global.get("listUri"))
+%}
+GET {{listUri}}
+Accept: application/statuslist+json
+
+> {%
+    const aggragtionUri = jsonPath(response.body, "$.aggregation_uri")
+    client.global.set("aggregationUri", aggragtionUri)
+    console.log(aggragtionUri)
+%}
+
+### Request a status list in JWT format
+< {%
+    request.variables.set("listUri", client.global.get("listUri"))
+%}
+GET {{listUri}}
+Accept: application/statuslist+jwt
+
+> {%
+    // const jwtParts = response.body.split(".")
+    console.log(response)
+%}
+
+### Request the aggregation of all available lists
+< {%
+    request.variables.set("aggregationUri", client.global.get("aggregationUri"))
+%}
+GET {{aggregationUri}}

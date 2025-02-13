@@ -1,0 +1,56 @@
+////
+  // Copyright 2024 Bundesdruckerei GmbH
+  // For the license see the accompanying file LICENSE.MD.
+////
+
+= Integration and performance test for the revocation-service-backend
+
+This repository contains integration and performance tests for the https://gitlab.partner.bdr.de/pidi/revocation-service/revocation-service-backend[revocation-service-backend].
+
+The tests are written with https://github.com/karatelabs/karate[the karte test framework].
+
+== Environments
+
+Karate supports different environments for test execution.
+By default the `local` environment is used.
+
+See `karate-config.js` for all configured environments.
+
+The environment is controlled by a java system property.
+See the https://github.com/karatelabs/karate?tab=readme-ov-file#switching-the-environment[karate documentation] for details.
+
+== Integration Tests
+
+For each test there is a `feature` file and a runner class.
+The runner class is used to start a single feature from with in the ide.
+
+To run all tests and create the report there is a `StatusListServiceTest` junit test.
+It can be started from the ide or by maven:
+
+[source,shell]
+----
+./mvnw test
+----
+
+or with a specific environment:
+
+[source,shell]
+----
+./mvnw test -D"karate.env=dev"
+----
+
+== Performance Tests
+
+The performance tests are using the https://github.com/karatelabs/karate/tree/master/karate-gatling[karate gatling integration]. They are started with the maven profile `gatling`.
+
+[source,shell]
+----
+./mvnw test -Pgatling
+----
+
+or with a specific environment:
+
+[source,shell]
+----
+./mvnw test -Pgatling -D"karate.env=dev"
+----

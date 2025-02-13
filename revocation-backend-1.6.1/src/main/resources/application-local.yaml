@@ -1,0 +1,18 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+logging:
+  level:
+#    ROOT: debug
+    org.hibernate.sql: debug
+    org.hibernate.orm.jdbc.bind: trace
+    de.bdr.revocation: debug
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true

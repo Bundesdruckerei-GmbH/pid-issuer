@@ -1,0 +1,90 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+openapi: 3.0.3
+info:
+  x-api-id: ffd87166-766a-40ac-8005-cec09e11c65e
+  x-audience: external-public
+  title: Revocation service
+  description: Public API for the revocation service
+  version: 0.2.0
+
+paths:
+  /users/issuances/count:
+    get:
+      tags:
+        - issuance
+      operationId: serveIssuanceCount
+      description: returns the count of PIDs issued by a user
+      parameters:
+        - in: header
+          name: X-Session-ID
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: false
+          description: 'Session ID, base64 URL encoded'
+      responses:
+        "200":
+          description: issued and revocable PIDs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssuanceCount"
+        default:
+          description: error occurred - see status code and error object for more information.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/issuances:
+    delete:
+      tags:
+        - issuance
+      operationId: revokePIDs
+      description: revokes the PIDs issued by a user
+      parameters:
+        - in: header
+          name: X-Session-ID
+          schema:
+            $ref: '#/components/schemas/IdParameter'
+          required: false
+          description: 'Session ID, base64 URL encoded'
+      responses:
+        "204":
+          description: all PIDs have been revoked
+        default:
+          description: error occurred - see status code and error object for more information.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    IssuanceCount:
+      type: object
+      properties:
+        issued:
+          type: integer
+          format: int32
+          minimum: 0
+        revocable:
+          type: integer
+          format: int32
+          minimum: 0
+      required:
+        - issued
+        - revocable
+    IdParameter:
+      type: string
+      maxLength: 80
+      pattern: '[a-zA-Z0-9_-]+(?:=|%3D|%3d){0,2}$'
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

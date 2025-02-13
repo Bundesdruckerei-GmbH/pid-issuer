@@ -1,0 +1,6 @@
+@if (issuanceCount(); as count) {
+  <div class="text-m">
+    <div id="revocation-summary-total">In total, {{ count.issued }} PIDs were issued with the ID card used for identification.</div>
+    <div id="revocation-summary-revocable">{{ count.revocable }} PIDs are still valid and can be revoked.</div>
+  </div>
+}

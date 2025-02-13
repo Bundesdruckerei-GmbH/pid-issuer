@@ -1,0 +1,12 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: delete_obsolete_request_type_at_pidi_session
+      author: tra
+      changes:
+        - sql:
+            sql: DELETE FROM pidi_session WHERE next_expected_request = 'PRE_FINISH_AUTHORIZATION_REQUEST';

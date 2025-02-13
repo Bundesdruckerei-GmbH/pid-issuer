@@ -1,0 +1,37 @@
+@use 'src/styles';
+@use 'src/breakpoints';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrapper {
+  max-width: 100%;
+  @include breakpoints.screen-greater-equal-720 {
+    padding: styles.$space-m;
+  }
+}
+
+.content {
+  display: flex;
+  @extend .gap-m;
+  @include breakpoints.screen-greater-equal-720 {
+    min-height: 560px;
+  }
+}
+
+.content-box {
+  display: flex;
+  flex-direction: column;
+  @extend .gap-l;
+  width: styles.$max-content-container-width;
+  max-width: 100%;
+  background-color: styles.$white;
+  @extend .p-x-m;
+  @extend .p-y-l;
+  @include breakpoints.screen-greater-equal-720 {
+    padding: styles.$space-xl;
+  }
+}

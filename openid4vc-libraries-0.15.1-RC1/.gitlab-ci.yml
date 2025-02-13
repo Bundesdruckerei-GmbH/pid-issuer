@@ -1,0 +1,4 @@
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.md
+include:
+  - local: '/.gitlab/ci/lib-multimodule.yml'

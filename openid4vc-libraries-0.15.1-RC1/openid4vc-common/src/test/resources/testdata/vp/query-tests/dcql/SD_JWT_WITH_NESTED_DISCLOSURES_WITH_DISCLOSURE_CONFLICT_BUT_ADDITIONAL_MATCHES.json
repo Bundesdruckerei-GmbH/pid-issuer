@@ -1,0 +1,135 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "a",
+              null,
+              "v1"
+            ],
+            "values": [
+              "match"
+            ]
+          },
+          {
+            "path": [
+              "a",
+              null,
+              "v2"
+            ],
+            "values": [
+              "match"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "a": [
+            {
+              "v1": "match",
+              "v2": "match"
+            },
+            {
+              "v1": "match",
+              "v2": "mismatch"
+            },
+            {
+              "v1": "mismatch",
+              "v2": "mismatch"
+            },
+            {
+              "v1": "match",
+              "v2": "mismatch"
+            },
+            {
+              "v1": "mismatch",
+              "v2": "mismatch"
+            }
+          ]
+        },
+        "discloseable": [
+          [
+            "a"
+          ],
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            3,
+            "v1"
+          ],
+          [
+            "a",
+            3,
+            "v2"
+          ],
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            4,
+            "v1"
+          ],
+          [
+            "a",
+            4,
+            "v2"
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "query": {
+        "id": "correct",
+        "disclosed": [
+          [
+            "a"
+          ],
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            3,
+            "v1"
+          ]
+        ]
+      }
+    }
+  ]
+}

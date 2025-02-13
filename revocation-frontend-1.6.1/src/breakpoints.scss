@@ -1,0 +1,85 @@
+$screen-720: 720px;
+$screen-980: 980px;
+$screen-1024: 1024px;
+$screen-1120: 1120px;
+$screen-1200: 1200px;
+$screen-1440: 1440px;
+
+$screen-smaller-720: 719.98px;
+$screen-smaller-980: 979.98px;
+$screen-smaller-1024: 1023.98px;
+$screen-smaller-1120: 1119.98px;
+$screen-smaller-1200: 1199.98px;
+$screen-smaller-1440: 1439.98px;
+
+@mixin screen-smaller-1440 {
+  @media screen and (max-width: #{$screen-smaller-1440}) {
+    @content;
+  }
+}
+
+@mixin screen-smaller-1200 {
+  @media screen and (max-width: #{$screen-smaller-1200}) {
+    @content;
+  }
+}
+
+@mixin screen-smaller-1120 {
+  @media screen and (max-width: #{$screen-smaller-1120}) {
+    @content;
+  }
+}
+
+@mixin screen-smaller-1024 {
+  @media screen and (max-width: #{$screen-smaller-1024}) {
+    @content;
+  }
+}
+
+@mixin screen-smaller-980 {
+  @media screen and (max-width: #{$screen-smaller-980}) {
+    @content;
+  }
+}
+
+@mixin screen-smaller-720 {
+  @media screen and (max-width: #{$screen-smaller-720}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-720 {
+  @media screen and (min-width: #{$screen-720}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-980 {
+  @media screen and (min-width: #{$screen-980}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-1024 {
+  @media screen and (min-width: #{$screen-1024}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-1120 {
+  @media screen and (min-width: #{$screen-smaller-1120}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-1200 {
+  @media screen and (min-width: #{$screen-smaller-1200}) {
+    @content;
+  }
+}
+
+@mixin screen-greater-equal-1440 {
+  @media screen and (min-width: #{$screen-smaller-1440}) {
+    @content;
+  }
+}

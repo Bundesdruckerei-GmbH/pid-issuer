@@ -1,0 +1,13 @@
+<section aria-label="application notifications" aria-live="assertive">
+  @for (notification of notifications.notifications$ | async; track notification) {
+    <alert
+      [type]="notification.type"
+      [titleText]="notification.title"
+      [closeable]="notification.closeable"
+      (alertClose)="notifications.removeNotification(notification)">
+      @if (notification.text) {
+        <span>{{ notification.text }}</span>
+      }
+    </alert>
+  }
+</section>

@@ -1,0 +1,62 @@
+#
+# Copyright 2024-2025 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+services:
+  revocation-postgres:
+    image: postgres:16.6-alpine
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_DB=revocationdb
+      - POSTGRES_USER=revocation_mig
+      - POSTGRES_PASSWORD=revocation_mig
+      - APP_USER=revocation_app
+      - APP_USER_PASSWORD=revocation_app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d revocationdb -U revocation_mig"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  revocation-flyway:
+    image: flyway/flyway:10.22-alpine
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "flyway -connectRetries=60 migrate && echo done > /tmp/done.txt && sleep infinity"]
+    depends_on:
+      - revocation-postgres
+    environment:
+      - FLYWAY_PLACEHOLDERS_APP_USER=revocation_app
+      - FLYWAY_URL=jdbc:postgresql://revocation-postgres/revocationdb
+      - FLYWAY_USER=revocation_mig
+      - FLYWAY_PASSWORD=revocation_mig
+      - FLYWAY_LOCATIONS=filesystem:/flyway/migrations
+    volumes:
+      - ./db/migrations:/flyway/migrations
+    healthcheck:
+      test: ["CMD-SHELL", "cat /tmp/done.txt"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management-alpine
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 3s
+      timeout: 1s
+      retries: 20
+
+volumes:
+  postgres:
+  rabbitmq:
+

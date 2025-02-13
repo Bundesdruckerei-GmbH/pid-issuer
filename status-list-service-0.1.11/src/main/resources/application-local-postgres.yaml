@@ -1,0 +1,10 @@
+server:
+  internal-api-port: 8086
+  internal-api-prefix: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/statuslistdb
+    username: status_list_app
+    password: status_list_app
+    driverClassName: org.postgresql.Driver

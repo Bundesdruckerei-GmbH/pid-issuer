@@ -1,0 +1,15 @@
+<button
+  class="basic-button button-text-m"
+  [class.bordered]="bordered()"
+  [class.small]="small()"
+  [class.single]="single()"
+  [attr.id]="buttonId()"
+  [routerLink]="routerLinkValue()"
+  [queryParams]="queryParams()"
+  [attr.type]="type()"
+  [disabled]="buttonDeactivated()">
+  @if (iconUrl(); as url) {
+    <icon [url]="url"/>
+  }
+  <ng-content/>
+</button>

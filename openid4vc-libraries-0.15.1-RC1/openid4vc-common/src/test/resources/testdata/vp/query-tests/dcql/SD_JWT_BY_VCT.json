@@ -1,0 +1,47 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "correct",
+        "format": "vc+sd-jwt",
+        "meta": {
+          "vct_values": [
+            "correct-vct"
+          ]
+        }
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "correct-vct",
+        "claims": {
+          "claim": "correct"
+        },
+        "discloseable": []
+      }
+    },
+    {
+      "id": "incorrect",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "incorrect-vct",
+        "claims": {
+          "claim": "incorrect"
+        },
+        "discloseable": []
+      }
+    }
+  ],
+  "expected": [
+    {
+      "correct": {
+        "id": "correct",
+        "disclosed": []
+      }
+    }
+  ]
+}

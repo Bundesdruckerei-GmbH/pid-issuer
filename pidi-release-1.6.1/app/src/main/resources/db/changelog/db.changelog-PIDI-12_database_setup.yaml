@@ -1,0 +1,14 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+databaseChangeLog:
+  - changeSet:
+      id: create_hibernate_sequence
+      author: dve
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1

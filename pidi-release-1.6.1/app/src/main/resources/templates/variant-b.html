@@ -1,0 +1,65 @@
+<!--
+
+    Copyright 2024 Bundesdruckerei GmbH
+    For the license see the accompanying file LICENSE.MD.
+
+-->
+<!DOCTYPE html>
+<html th:replace="~{layout :: main(~{::title}, ~{::#content})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Issuance protocol - Variant B</title>
+</head>
+<body>
+<main>
+    <div id="content" class="container mt-2" style="max-width: 40rem;">
+        <h1>Variant B</h1>
+        <h2>Issuance protocol</h2>
+        <ul>
+            <li>The issuer URI to be used as the base URL for metadata fetching is
+                "https://demo.pid-issuer.bundesdruckerei.de/b". The <em>metadata</em> contain the information required to
+                construct the initial authorization request sent by the wallet to start the issuance.
+            </li>
+            <li>
+                The variant implements
+                <a href="https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html" rel="noopener">OpenID for
+                    Verifiable Credential Issuance Implementers Draft 1 (Draft 13)</a>.
+            </li>
+            <li>
+                The issuance is performed using the authorization code flow with a <code>scope</code> parameter and can
+                be initiated by the wallet.
+            </li>
+            <li>
+                The use of a <a href="https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html" rel="noopener">Pushed
+                Authorization Requests</a> is <strong>required</strong>.
+            </li>
+            <li>
+                The use of <a href="https://www.rfc-editor.org/rfc/rfc7636" rel="noopener">Proof Key for Code Exchange (PKCE)</a>
+                is <strong>required</strong>.
+            </li>
+            <li>
+                The use of any <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/02/" rel="noopener">
+                Client Attestation</a> is currently completely <strong>ignored</strong>.
+            </li>
+            <li>
+                The use of a <a href="https://datatracker.ietf.org/doc/html/rfc9449" rel="noopener">
+                    Demonstrated Proof of Possession (DPoP)</a> is <strong>required</strong>.
+            </li>
+            <li>
+                Issuance happens at the <em>Credential Endpoint</em> and <strong>requires</strong> a
+                <em>Relying Party (RP)</em> generated Elliptic Curve P-256 public key, transmitted via the
+                <code>verifier_ka</code> parameter and used for Diffie-Hellman key agreement; for MSO mdoc credentials,
+                additionally a <em>Session Transcript</em> in the <code>session_transcript</code> parameter is
+                <strong>required</strong>.
+            </li>
+            <li>
+                <em>Batch Credential Endpoint</em>, deferred issuance and the <em>Notification Endpoint</em> are
+                <em>not</em> needed and thus unsupported.
+            </li>
+            <li>
+                Credentials can be issued using the provided test eID cards.
+            </li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

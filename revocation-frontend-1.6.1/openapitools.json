@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.9.0",
+    "generators": {
+      "antrag": {
+        "generatorName": "typescript-angular",
+        "apiPackage": "services",
+        "modelPackage": "models",
+        "output": "src/app/api",
+        "glob": "./docs/api/*.openapi.yaml",
+        "globalProperty": {
+          "models": "",
+          "apis": "",
+          "supportingFiles": "configuration.ts:encoder.ts:param.ts:variables.ts"
+        },
+        "additionalProperties": {
+          "ngVersion": "18.2.10"
+        }
+      }
+    }
+  }
+}

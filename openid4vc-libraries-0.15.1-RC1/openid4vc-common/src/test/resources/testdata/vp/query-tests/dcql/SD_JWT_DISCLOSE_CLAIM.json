@@ -1,0 +1,46 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "correct",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "claim"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "claim": "correct"
+        },
+        "discloseable": [
+          [
+            "claim"
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "correct": {
+        "id": "correct",
+        "disclosed": [
+          [
+            "claim"
+          ]
+        ]
+      }
+    }
+  ]
+}

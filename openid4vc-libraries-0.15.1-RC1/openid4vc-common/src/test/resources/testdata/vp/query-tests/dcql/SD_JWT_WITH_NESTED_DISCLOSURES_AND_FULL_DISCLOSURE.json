@@ -1,0 +1,64 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "path": [
+              "o",
+              "a"
+            ]
+          },
+          {
+            "path": [
+              "o",
+              "b"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "o": {
+            "a": "a",
+            "b": "b"
+          }
+        },
+        "discloseable": [
+          [
+            "o"
+          ],
+          [
+            "o",
+            "a"
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "query": {
+        "id": "correct",
+        "disclosed": [
+          [
+            "o"
+          ],
+          [
+            "o",
+            "a"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+server:
+  port: 8085
+  internal-api-port: 8086
+  internal-api-prefixes: /pools, /status-lists

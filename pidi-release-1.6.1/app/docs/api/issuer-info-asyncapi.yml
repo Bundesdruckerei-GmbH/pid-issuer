@@ -1,0 +1,68 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+asyncapi: 2.6.0
+info:
+  title: PID Issuer
+  version: 0.1.0
+  description: >
+    A PID Holder must be able to revoke a valid PID. The PID Issuer provides the relevant issuance information.
+servers:
+  local-build:
+    description: 'local machine'
+    url: 'localhost:5672'
+    protocol: amqp
+    protocolVersion: 0.9.1
+  dev:
+    description: 'Virtual host pidi-dev'
+    url: 'rmq.qa.ext.mq.bop:5671'
+    protocol: amqps
+    protocolVersion: 0.9.1
+  test:
+    description: 'Virtual host pidi-test'
+    url: 'rmq.qa.ext.mq.bop:5671'
+    protocol: amqps
+    protocolVersion: 0.9.1
+  demo:
+    description: 'Virtual host pidi-demo'
+    url: 'rmq.ext.mq.bop:5671'
+    protocol: amqps
+    protocolVersion: 0.9.1
+defaultContentType: application/json
+channels:
+  revocation:
+    publish:
+      operationId: "provideIssuanceInformation"
+      message:
+        $ref: '#/components/messages/issuance-message'
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: pidi.direct
+          type: direct
+          durable: true
+          autoDelete: false
+components:
+  messages:
+    issuance-message:
+      name: issuance
+      title: Issuer Issuance Information
+      summary: provides the issuance status information
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          message_id:
+            description: unique ID of the message
+            type: string
+            example: 123e4567-e89b-42d3-a456-556642440000
+      payload:
+        $ref: '#/components/schemas/issuance'
+  schemas:
+    issuance:
+      type: object
+      properties:
+        $ref: './schema/issuance.json#/properties'

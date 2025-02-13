@@ -1,0 +1,103 @@
+{
+  "query": {
+    "credentials": [
+      {
+        "id": "query",
+        "format": "vc+sd-jwt",
+        "claims": [
+          {
+            "id": "a",
+            "path": [
+              "a"
+            ]
+          },
+          {
+            "id": "b",
+            "path": [
+              "b"
+            ]
+          },
+          {
+            "id": "c1",
+            "path": [
+              "c",
+              null
+            ],
+            "values": [
+              1
+            ]
+          },
+          {
+            "id": "c2",
+            "path": [
+              "c",
+              null
+            ],
+            "values": [
+              2
+            ]
+          }
+        ],
+        "claims_sets": [
+          [
+            "a",
+            "c1"
+          ],
+          [
+            "b",
+            "c2"
+          ]
+        ]
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "id": "correct",
+      "type": "vc+sd-jwt",
+      "data": {
+        "vct": "vct",
+        "claims": {
+          "a": "a",
+          "b": "b",
+          "c": [
+            0,
+            2
+          ]
+        },
+        "discloseable": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ],
+          [
+            "c",
+            0
+          ],
+          [
+            "c",
+            1
+          ]
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "query": {
+        "id": "correct",
+        "disclosed": [
+          [
+            "b"
+          ],
+          [
+            "c",
+            1
+          ]
+        ]
+      }
+    }
+  ]
+}

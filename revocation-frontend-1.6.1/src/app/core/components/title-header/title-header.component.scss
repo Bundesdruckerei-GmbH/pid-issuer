@@ -1,0 +1,12 @@
+@use 'src/styles';
+
+.title {
+  width: 100%;
+  height: 3.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @extend .headline-3;
+  color: styles.$blue5;
+  background-color: styles.$blue90;
+}

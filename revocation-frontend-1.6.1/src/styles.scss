@@ -1,0 +1,355 @@
+@forward 'src/colors';
+
+@use 'src/colors';
+@use 'src/breakpoints';
+
+// styling for cdk dialog
+@import '@angular/cdk/overlay-prebuilt.css';
+
+$max-content-container-width: 800px;
+
+$spacings: ('none': 0, 's': 8px, 'm': 16px, 'l': 24px, 'xl': 32px, 'xxl': 40px, '3xl': 48px, '4xl': 56px, 'auto': auto);
+
+$space-s: map-get($spacings, 's');
+$space-m: map-get($spacings, 'm');
+$space-l: map-get($spacings, 'l');
+$space-xl: map-get($spacings, 'xl');
+$space-xxl: map-get($spacings, 'xxl');
+$space-3xl: map-get($spacings, '3xl');
+
+@mixin spacing-loop($class-name, $style-properties...) {
+  @each $size, $value in $spacings {
+    #{'.' + $class-name + $size} {
+      @each $property in $style-properties {
+        #{$property}: #{$value};
+      }
+    }
+  }
+}
+
+@include spacing-loop('m-t-', 'margin-top');
+@include spacing-loop('m-b-', 'margin-bottom');
+@include spacing-loop('m-l-', 'margin-left');
+@include spacing-loop('m-r-', 'margin-right');
+@include spacing-loop('m-a-', 'margin');
+@include spacing-loop('m-x-', 'margin-left', 'margin-right');
+@include spacing-loop('m-y-', 'margin-top', 'margin-bottom');
+@include spacing-loop('p-t-', 'padding-top');
+@include spacing-loop('p-b-', 'padding-bottom');
+@include spacing-loop('p-l-', 'padding-left');
+@include spacing-loop('p-r-', 'padding-right');
+@include spacing-loop('p-a-', 'padding');
+@include spacing-loop('p-x-', 'padding-left', 'padding-right');
+@include spacing-loop('p-y-', 'padding-top', 'padding-bottom');
+@include spacing-loop('gap-h-', 'column-gap');
+@include spacing-loop('gap-v-', 'row-gap');
+@include spacing-loop('gap-', 'gap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Verdana, sans-serif;
+}
+
+body {
+  min-width: 320px;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.headline {
+  &-1 {
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 3.125rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+
+  &-2 {
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  &-3 {
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+    }
+  }
+
+  &-4 {
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: .875rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  &-5 {
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: .875rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  &-6 {
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    @include breakpoints.screen-smaller-1120 {
+      font-size: .75rem;
+      line-height: 1rem;
+    }
+  }
+}
+
+.text {
+  &-xl {
+    font-weight: 400;
+    font-size: 2.375rem;
+    line-height: 3rem;
+  }
+
+  &-l {
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 2.125rem;
+  }
+
+  &-m {
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  &-s {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.375rem;
+  }
+
+  &-xs {
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &-xxs {
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+  }
+}
+
+.button-text {
+  &-l {
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 2.125rem;
+  }
+
+  &-m {
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  &-s {
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.375rem;
+  }
+}
+
+.icon {
+  &-xl {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  &-l {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &-m {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  &-s {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &-xs {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.no-bullet {
+  list-style: none;
+}
+
+@mixin text-highlight {
+  font-weight: 500;
+}
+
+.text-highlight {
+  @include text-highlight;
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipsis {
+  @include ellipsis;
+}
+
+.shadow-level-1 {
+  box-shadow: 0 1px 3px 0 colors.$shadow-color-1;
+}
+
+.shadow-level-2 {
+  box-shadow: 0 2px 6px 0 colors.$shadow-color-1;
+}
+
+.shadow-level-3 {
+  box-shadow: 0 3px 9px 0 colors.$shadow-color-2;
+}
+
+.shadow-level-4 {
+  box-shadow: 0 4px 12px 0 colors.$shadow-color-2;
+}
+
+.shadow-level-1-inset {
+  box-shadow: inset 0 1px 3px 0 colors.$shadow-color-1;
+}
+
+.shadow-level-2-inset {
+  box-shadow: inset 0 2px 6px 0 colors.$shadow-color-1;
+}
+
+.shadow-level-3-inset {
+  box-shadow: inset 0 3px 9px 0 colors.$shadow-color-2;
+}
+
+.shadow-level-4-inset {
+  box-shadow: inset 0 4px 12px 0 colors.$shadow-color-2;
+}
+
+@mixin button-style-none() {
+  border: unset;
+  background-color: unset;
+  color: unset;
+  cursor: pointer;
+}
+
+@mixin icon-button() {
+  @include button-style-none;
+  color: colors.$blue60;
+  display: flex;
+  height: min-content;
+  width: min-content;
+  border-radius: 25%;
+  outline-offset: 0.125rem;
+
+  &:hover {
+    color: colors.$blue80;
+  }
+}
+
+@mixin input-error() {
+  color: colors.$red60;
+  border-color: colors.$red60;
+  // Chrome autofill
+  -webkit-text-fill-color: colors.$red60;
+}
+
+@mixin input() {
+  @extend .text-m;
+  @extend .shadow-level-1-inset;
+  padding: 13px 16px 14px 16px;
+
+  $line-height: 1.313rem;
+  line-height: $line-height;
+  height: calc($line-height + 27px); // mit root font 16px => 48px
+
+  border: 1px solid colors.$grey70;
+  border-radius: 2px;
+  background-color: colors.$white;
+
+  &.ng-touched.ng-invalid {
+    @include input-error;
+  }
+
+  &:hover {
+    border-color: colors.$grey90;
+  }
+
+  &:active {
+    border-color: colors.$blue60;
+  }
+
+  &:focus, &:focus-within {
+    border-color: colors.$blue60;
+    outline: colors.$blue40 solid 4px;
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    background-color: colors.$grey10;
+    border-color: colors.$grey50;
+    color: colors.$grey50;
+  }
+}
+
+.error-message {
+  color: colors.$red60;
+  @extend .text-xs;
+
+  &:not(:empty) {
+    margin-top: 4px;
+  }
+}
+
+@mixin visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.visually-hidden {
+  @include visually-hidden;
+}

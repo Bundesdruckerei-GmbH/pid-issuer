@@ -1,0 +1,97 @@
+#
+# Copyright 2024 Bundesdruckerei GmbH
+# For the license see the accompanying file LICENSE.MD.
+#
+
+services:
+  pidi.localhost.bdr.de:
+    profiles: ["fullStack"]
+    depends_on:
+      - pid-issuer-mig
+      - pid-issuer-db
+      - pid-issuer-rabbit
+      - status-list-healthcheck
+    image: gcr.io/distroless/java21-debian12:debug
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pid-issuer-db:5432/pididb
+      - SPRING_RABBITMQ_HOST=pid-issuer-rabbit
+      - PIDI_ISSUANCE_SIGNERPATH=/opt/keys/issuance/issuance-test.p12
+      - PIDI_ISSUANCE_SIGNERALIAS=1
+      - PIDI_ISSUANCE_SEEDPATH=/opt/keys/issuance/seed-test.p12
+      - PIDI_BASEURL=${PIDI_BASEURL:-http://pidi.localhost.bdr.de:8080}
+      - PIDI_STATUSLISTSERVICE_BASEURL=http://status-list-service:8085
+      - PIDI_STATUSLISTSERVICE_APIKEY_C=366A9069-2965-4667-9AD2-5C51D71046D8
+      - PIDI_STATUSLISTSERVICE_POOL-ID_C=verified-email
+      - PIDI_STATUSLISTSERVICE_APIKEY_C1=366A9069-2965-4667-9AD2-5C51D71046D8
+      - PIDI_STATUSLISTSERVICE_POOL-ID_C1=verified-email
+      - PIDI_STATUSLISTSERVICE_APIKEY_C2=366A9069-2965-4667-9AD2-5C51D71046D8
+      - PIDI_STATUSLISTSERVICE_POOL-ID_C2=verified-email
+      - PIDI_STATUSLISTSERVICE_APIKEY_B=366A9069-2965-4667-9AD2-5C51D71046D8
+      - PIDI_STATUSLISTSERVICE_POOL-ID_B=verified-email
+      - PIDI_STATUSLISTSERVICE_APIKEY_B1=366A9069-2965-4667-9AD2-5C51D71046D8
+      - PIDI_STATUSLISTSERVICE_POOL-ID_B1=verified-email
+    entrypoint: ["/busybox/sh"]
+    command: ["-c", "/usr/bin/java -jar /opt/app/*.jar"]
+    volumes:
+        - ./issuance:/opt/keys/issuance
+        - ./target:/opt/app
+
+  pid-issuer-db:
+    image: postgres:15.10-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=pididb
+      - POSTGRES_USER=pidi_issuer_mig
+      - POSTGRES_PASSWORD=pidi_issuer_mig
+      - APP_USER=pidi_issuer_app
+      - APP_USER_PASSWORD=pidi_issuer_app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ../docker-compose/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d pididb -U pidi_issuer_mig"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  pid-issuer-mig:
+    image: liquibase/liquibase:4.30.0@sha256:bbb7930d977f47b1918e4dc5a0112122322095dc51acb4356743890fa869d8f1
+    depends_on:
+      - pid-issuer-db
+    environment:
+      - LIQUIBASE_COMMAND_URL=jdbc:postgresql://pid-issuer-db:5432/pididb?escapeSyntaxCallMode=callIfNoReturn
+      - RUN_LOCAL=true
+      - LIQUIBASE_COMMAND_USERNAME=pidi_issuer_mig
+      - LIQUIBASE_COMMAND_PASSWORD=pidi_issuer_mig
+      - LIQUIBASE_COMMAND_CONTEXT_FILTER=pidi
+    volumes:
+        - ./src/main/resources/db:/liquibase/db
+    entrypoint: ["/bin/bash"]
+    command: ["-c", "/liquibase/docker-entrypoint.sh liquibase --changeLogFile=db/changelog/db.changelog-master.yaml --logLevel=info update && echo done > /tmp/done.txt && sleep infinity"]
+    healthcheck:
+      test: ["CMD-SHELL", "cat /tmp/done.txt"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+
+  pid-issuer-rabbit:
+    image: rabbitmq:3.13.7-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 3s
+      timeout: 1s
+      retries: 20
+
+volumes:
+  postgres:
+  rabbitmq:
+
