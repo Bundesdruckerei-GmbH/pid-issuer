@@ -30,23 +30,6 @@ This is an instruction of how to set up your project locally.
 
 ### Prerequisites
 
-- The following repositories must be configured to be used by gradle. Use variables as described in [build setup](#build-setup) and add them to your `~/.gradle/gradle.properties`
-
-  - *(recommended)*
-    ```
-    MAVEN_REPO_{n}=https://partner.bdr.de/artifactory/repo1
-    MAVEN_REPO_{n}_USER=p...
-    MAVEN_REPO_{n}_PASSWORD=...
-    ```
-    
-  - *(required)*
-    ```
-    MAVEN_REPO_{n+1}=https://partner.bdr.de/artifactory/ssi-maven
-    MAVEN_REPO_{n+1}_USER=p...
-    MAVEN_REPO_{n+1}_PASSWORD=...
-    ```
-  > Instead of your real password, generate an identity token at https://partner.bdr.de/ui/user_profile
-
 - Having Docker installed and running.
 
 ### Installation
@@ -320,20 +303,3 @@ The list configuration is a HASH with the following contents:
 
 Some performance test results are shown in [performance-tests.md].
 
-## TODOs
-
-- Plan and implement a list expiration feature (so that outdated lists can be deleted and do not need to be
-  stored anymore)
-- Changeable list size
-- API to manage pools
-- Generate, store and provide pool statistics
-    - Prometheus?
-    - Could be relevant: Http stats, References returned, Lists requested, Status updates, Number of lists, Number of
-      empty lists
-    - Already prepared, relevant information is available at StatsService, number of lists and empty lists can be
-      fetched on demand from redis
-- Idea: Grow or shrink prefetch buffer size depending on load
-- Elaborate: Alternative data storage based on RDBMS
-    - Bit string manipulation: https://www.postgresql.org/docs/current/functions-bitstring.html
-    - Transaction isolation: https://www.postgresql.org/docs/current/transaction-iso.html
-    - Check how an ordered list of next indices can be managed efficiently
